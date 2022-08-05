@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "G:\\FinalProject\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj": {}
+    "G:\\myChance\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj": {}
   },
   "projects": {
-    "G:\\FinalProject\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj": {
+    "G:\\myChance\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\FinalProject\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
+        "projectUniqueName": "G:\\myChance\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
         "projectName": "FinalProjectBkEndApi",
-        "projectPath": "G:\\FinalProject\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
+        "projectPath": "G:\\myChance\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
         "packagesPath": "C:\\Users\\Fish\\.nuget\\packages\\",
-        "outputPath": "G:\\FinalProject\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi\\obj\\",
+        "outputPath": "G:\\myChance\\FinalProjectApi\\FinalProjectBkEndApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -44,9 +44,37 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.22.0, )"
             }
           },
           "imports": [
