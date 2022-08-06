@@ -6,10 +6,10 @@ namespace FinalProjectBkEndApi.Models
     {
         public RestaurantDbContext(DbContextOptions options) : base(options) { }
 
-        public virtual DbSet<Cutomer> Cutomers { get; set; }
+        //public virtual DbSet<Cutomer> Cutomers { get; set; }
         public virtual DbSet<Categories> Categories { get; set; }
-        public virtual DbSet<Items> Materials { get; set; }
-        public virtual DbSet<Products> Meals { get; set; }
+        public virtual DbSet<Items> Items { get; set; }
+        public virtual DbSet<Products> Products { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetails> OrderDetails { get; set; }
         public virtual DbSet<PurchasesConsumption> PurchasesConsumptions { get; set; }

@@ -14,6 +14,7 @@ namespace FinalProjectBkEndApi.Controllers
         {
             _Pservices = Pservices;
         }
-
+        [HttpGet]
+        public IActionResult GetAll() { return Ok(); }
     }
 }

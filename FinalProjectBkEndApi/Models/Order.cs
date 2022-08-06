@@ -29,14 +29,26 @@ namespace FinalProjectBkEndApi.Models
         [Column(TypeName ="money")]
         public int? totalPrice { get; set; }
         [MinLength(20)]
-        public string  notes { get; set; } 
+        public string  notes { get; set; }
+        public string nameClient { get; set; }
+        [RegularExpression(@"(010|011|015|012)[0-9]{8}")]
+        public string phoneClient { get; set; }
+        [StringLength(50)]
+        public string AddressClient { get; set; }
+        [Required]
         public string orderType { get; set; } //(delivery / in restaurant)
+        [Required]
         public string orderStatus { get; set; } //(Ok|cancel|wait)
+
         #endregion
 
         #region Relation
-        public virtual ICollection<Cutomer> Cutomers { get; set; }
-        public virtual ICollection<User> Users { get; set; }
+        //[ForeignKey("Cutomer")]
+        //public int? cutomer_id { get; set; }
+        //public virtual Cutomer Cutomer { get; set; }
+        [ForeignKey("User")]
+        public int? user_id { get; set; }
+        public virtual User User { get; set; }
         public virtual ICollection<OrderDetails> OrderDetails { get; set; }
         #endregion
     }

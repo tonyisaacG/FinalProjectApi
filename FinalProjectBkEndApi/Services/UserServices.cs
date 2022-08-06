@@ -53,6 +53,7 @@ namespace FinalProjectBkEndApi.Services
                 var Roles = _DbContext.Roles.Where(r => r.permission == Permission.User.ToString()).FirstOrDefault();
                 newUser.Role = Roles;
                 _DbContext.Users.Add(newUser);
+                _DbContext.SaveChanges();
                 return true;
             }
         }

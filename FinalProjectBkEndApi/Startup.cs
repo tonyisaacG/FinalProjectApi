@@ -1,4 +1,7 @@
+using FinalProjectBkEndApi.DTO;
 using FinalProjectBkEndApi.Models;
+using FinalProjectBkEndApi.Repositories;
+using FinalProjectBkEndApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -86,20 +89,23 @@ namespace FinalProjectBkEndApi
             #endregion
 
             #region Scrop injection services
-
+            services.AddScoped<IUserServices, UserServices>();
+            services.AddScoped<IOrderServices, OrderServices>();
+         
             #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            #region
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FinalProjectBkEndApi v1"));
             }
-
             app.UseRouting();
 
             app.UseCors(AllowOrigins);
@@ -110,6 +116,7 @@ namespace FinalProjectBkEndApi
             {
                 endpoints.MapControllers();
             });
+            #endregion
         }
     }
 }

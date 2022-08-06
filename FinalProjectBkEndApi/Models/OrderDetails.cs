@@ -8,7 +8,7 @@ namespace FinalProjectBkEndApi.Models
         #region properties
         [ForeignKey("Order")]
         public int order_id { get; set; } //(fk,pk)
-        [ForeignKey("Dish")]
+        [ForeignKey("Products")]
         public int product_id {get; set; } //(fk,pk)
         public int quantityMeal { get; set; }
         [Column(TypeName ="money")]

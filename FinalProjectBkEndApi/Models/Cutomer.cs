@@ -10,15 +10,18 @@ namespace FinalProjectBkEndApi.Models
         [Key]
         public int id { get; set; }
         [Required]
-        public string name { get; set; }
+        public string nameClient { get; set; }
         [RegularExpression(@"(010|011|015|012)[0-9]{8}")]
-        public string phone { get; set; }
+        public string phoneClient { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string AddressClient { get; set; }
 
         #endregion
 
         #region Relation
         public virtual ICollection<Order> Orders { get; set; }
-        public virtual ICollection<CutomerAddress> CutomerAddresses { get; set; }
+        //public virtual ICollection<CutomerAddress> CutomerAddresses { get; set; }
 
         #endregion
 

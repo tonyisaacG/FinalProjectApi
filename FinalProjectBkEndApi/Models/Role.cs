@@ -6,7 +6,8 @@ namespace FinalProjectBkEndApi.Models
     public enum Permission
     {
         Admin,
-        Casher,User
+        Casher,
+        User
     }
     public class Role
     {
