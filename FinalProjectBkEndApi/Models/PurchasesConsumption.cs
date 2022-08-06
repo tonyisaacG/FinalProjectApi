@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FinalProjectBkEndApi.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +11,7 @@ namespace FinalProjectBkEndApi.Models
         Buy,
         Sell,
     }   
-    public class PurchasesConsumption
+    public class PurchasesConsumption:IParentModel
     {
         #region properties
         [Key]
@@ -23,7 +24,7 @@ namespace FinalProjectBkEndApi.Models
         public int totalPrice { get; set; }
         [StringLength(20)]
         public string vendorName { get; set; }
-        public BillType type { get; set; }
+        public string type { get; set; }
         #endregion
 
         #region Relation

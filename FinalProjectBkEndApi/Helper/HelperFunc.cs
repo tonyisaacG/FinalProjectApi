@@ -59,6 +59,37 @@ namespace FinalProjectBkEndApi.Helper
                 notes = order.notes,
             };
         }
-     
+        public static PurchasesSalesModel PurchasesDTOpurchasesModel(this PurchasesConsumption purchases)
+        {
+            var purchasesMolde = new PurchasesSalesModel()
+            {
+                bill_id = purchases.id,
+                bill_date = purchases.date,
+                totalPrice = purchases.totalPrice,
+                vendorName = purchases.vendorName,
+                type =purchases.type,
+            };
+            foreach (var details in purchases.PurchasesDetails)
+            {
+                purchasesMolde.PurchasesSalesDetailsModels.Add(new PurchasesSalesDetailsModel()
+                {
+                   item_id = details.Items.id,
+                   item_name = details.Items.name,
+                   price = details.price,
+                   quantity = details.quantity
+                });
+            }
+            return purchasesMolde;
+        }
+        public static PurchasesConsumption PurchasesModelDTPurchases(this PurchasesSalesModel purchases)
+        {
+            return new PurchasesConsumption()
+            {
+               date = purchases.bill_date,
+               totalPrice = purchases.totalPrice,
+               type = purchases.type,
+               vendorName = purchases.vendorName
+            };
+        }
     }
 }

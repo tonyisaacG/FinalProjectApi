@@ -6,6 +6,6 @@ namespace FinalProjectBkEndApi.Repositories
 {
     public interface IBill<IModel>:IGenericServices<IParentModel,IModel>
     {
-        IParentModel Get(BillType id);      
+        IParentModel Get(BillType type);      
     }
 }

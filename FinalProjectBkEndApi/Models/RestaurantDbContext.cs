@@ -31,7 +31,7 @@ namespace FinalProjectBkEndApi.Models
 
             #region  Material Config
             modelBuilder.Entity<Items>()
-            .HasCheckConstraint("CK_Properties_ExpectQ_NowQ", "[expectedQuantityInDay] < [totalQuantity]");
+            .HasCheckConstraint("CK_Properties_ExpectQ_NowQ", "[expectedQuantityInDay] <= [totalQuantity]");
             #endregion
 
             #region Order Details Config

@@ -10,10 +10,10 @@ namespace FinalProjectBkEndApi.Models
         public int purchases_id { get; set; }
         [ForeignKey("Items")]
         public int item_id { get; set; }
-        [Range(minimum:1,maximum:int.MaxValue)]
+        [Range(minimum:0,maximum:int.MaxValue)]
         public int quantity { get; set; }
         [Column(TypeName ="money")]
-        [Range(minimum:1,maximum:int.MaxValue)]
+        [Range(minimum:0,maximum:int.MaxValue)]
         public int price { get; set; }
         #endregion
 

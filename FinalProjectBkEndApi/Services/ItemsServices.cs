@@ -32,7 +32,7 @@ namespace FinalProjectBkEndApi.Services
             throw new System.NotImplementedException();
         }
 
-        public bool Put(int id, IParentModel model)
+        public bool Put(int id, Items entity)
         {
             throw new System.NotImplementedException();
         }

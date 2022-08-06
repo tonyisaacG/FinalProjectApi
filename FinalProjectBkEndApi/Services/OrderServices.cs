@@ -133,11 +133,11 @@ namespace FinalProjectBkEndApi.Services
             return false;
         }
 
-        public bool PutOrder(int id,OrderModel order)
-        {
-            return true;
-        }
+    
 
-      
+        public bool PutOrder(int id, OrderModel order)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

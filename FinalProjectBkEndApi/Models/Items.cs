@@ -11,7 +11,7 @@ namespace FinalProjectBkEndApi.Models
         public int id { get; set; }
         [Required]
         public string name { get; set; }
-        [Range(minimum: 1, maximum: int.MaxValue)]
+        [Range(minimum: 0, maximum: int.MaxValue)]
         [Required]
         public int totalQuantity { get; set; }
         [Column(TypeName ="money")]
