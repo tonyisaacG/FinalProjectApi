@@ -10,8 +10,8 @@ namespace FinalProjectBkEndApi.Controllers
     [ApiController]
     public class AuthinticationsController : ControllerBase
     {
-        public readonly IUserServices _Uservices;
-        public AuthinticationsController(IUserServices Uservices)
+        public readonly IAuthServices _Uservices;
+        public AuthinticationsController(IAuthServices Uservices)
         {
             _Uservices = Uservices;
         }

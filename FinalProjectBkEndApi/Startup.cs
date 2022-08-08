@@ -89,7 +89,7 @@ namespace FinalProjectBkEndApi
             #endregion
 
             #region Scrop injection services
-            services.AddScoped<IUserServices, UserServices>();
+            services.AddScoped<IAuthServices, AuthServices>();
             services.AddScoped<IOrderServices, OrderServices>();
             services.AddScoped<IBill<PurchasesSalesModel>, SellBuyServices>();
             services.AddScoped<ItemsServices, ItemsServices>();

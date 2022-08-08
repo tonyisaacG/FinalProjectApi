@@ -19,7 +19,7 @@ namespace FinalProjectBkEndApi.Models
         #endregion
 
         #region Relation
-        public virtual User Users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
         #endregion 
     }
 }

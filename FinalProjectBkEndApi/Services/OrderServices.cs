@@ -137,7 +137,53 @@ namespace FinalProjectBkEndApi.Services
 
         public bool PutOrder(int id, OrderModel order)
         {
-            throw new NotImplementedException();
+            var oldOrder = _DbContext.Orders.Include(o => o.OrderDetails).FirstOrDefault(od => od.id == id);
+            if (oldOrder != null)
+            {
+                oldOrder.date = order.order_date;
+                oldOrder.notes = order.notes;
+                oldOrder.phoneClient = order.phoneClient;
+                oldOrder.AddressClient = order.AddressClient;
+                oldOrder.totalPrice = order.totalPrice;
+                oldOrder.nameClient = order.nameClient;
+                oldOrder.orderType = order.orderType;
+                oldOrder.orderStatus = order.orderStatus;
+               
+                _DbContext.Entry(oldOrder).State = EntityState.Modified;
+                _DbContext.SaveChanges();
+                var detailsEdit = _DbContext.OrderDetails.Where(od => od.order_id == oldOrder.id).ToList();
+                var detailsModel = order.orderDetailsModels;
+
+                //save deatils for order or exists
+                if (order.orderDetailsModels.Count > 0)
+                    {
+                        for(int i=0;i<detailsModel.Count;i++)
+                        {
+                            detailsEdit[i].priceMeal = detailsModel[i].priceMeal;
+                            detailsEdit[i].quantityMeal = detailsModel[i].quantityMeal;
+                            detailsEdit[i].desription = detailsModel[i].desription;
+                            detailsEdit[i].product_id = detailsModel[i].product_id;
+                        }
+                        _DbContext.OrderDetails.UpdateRange(detailsEdit);
+                        _DbContext.SaveChanges();
+                    }
+                return true;
+            }
+            return false;
+        }
+        public bool DeleteOrderDetails(int idOrder,int idProduct)
+        {
+            var orderDeatails = _DbContext.OrderDetails.Where(od => od.order_id == idOrder).ToList();
+            foreach(var order in orderDeatails)
+            {
+                if(order.product_id == idProduct)
+                {
+                    _DbContext.Entry(order).State = EntityState.Deleted;
+                }
+            }
+            _DbContext.RemoveRange(orderDeatails);
+            _DbContext.SaveChanges();
+            return true;
         }
     }
 }

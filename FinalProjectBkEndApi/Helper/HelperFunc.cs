@@ -1,5 +1,7 @@
 ﻿using FinalProjectBkEndApi.DTO;
 using FinalProjectBkEndApi.Models;
+using FinalProjectBkEndApi.Services;
+using System;
 using System.Linq;
 
 namespace FinalProjectBkEndApi.Helper
@@ -13,7 +15,7 @@ namespace FinalProjectBkEndApi.Helper
                 name = registerModel.name,
                 username = registerModel.username,
                 phone = registerModel.phone,
-                password = registerModel.password,
+                password = EncodePasswordToBase64(registerModel.password),
             };
         }
         public static OrderModel OrderDTOrderModel(this Order order)
@@ -31,18 +33,22 @@ namespace FinalProjectBkEndApi.Helper
                 notes = order.notes
             
             };
-            foreach (var details in order.OrderDetails)
+            if (order.OrderDetails != null)
             {
-                orderMolde.orderDetailsModels.Add(new OrderDetailsModel()
+                foreach (var details in order.OrderDetails)
                 {
-                    product_id = details.Products.id,
-                    product_name = details.Products.name,
-                    priceMeal = details.priceMeal,
-                    quantityMeal = details.quantityMeal,
-                    desription = details.desription
+                    orderMolde.orderDetailsModels.Add(new OrderDetailsModel()
+                    {
+                        product_id = details.Products.id,
+                        product_name = details.Products.name,
+                        priceMeal = details.priceMeal,
+                        quantityMeal = details.quantityMeal,
+                        desription = details.desription
 
-                });
+                    });
+                }
             }
+            else { orderMolde.orderDetailsModels =null; }
             return orderMolde;
         }
         public static Order OrderModelDTOrder(this OrderModel order)
@@ -89,6 +95,57 @@ namespace FinalProjectBkEndApi.Helper
                totalPrice = purchases.totalPrice,
                type = purchases.type,
                vendorName = purchases.vendorName
+            };
+        }
+
+        public static string EncodePasswordToBase64(string password)
+        {
+            try
+            {
+                byte[] encData_byte = new byte[password.Length];
+                encData_byte = System.Text.Encoding.UTF8.GetBytes(password);
+                string encodedData = Convert.ToBase64String(encData_byte);
+                return encodedData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in base64Encode" + ex.Message);
+            }
+        }
+
+        public static Items ItemsModelDTOItems(this ItemsModel item)
+        {
+            return new Items()
+            {
+                id = item.id,
+                name = item.name,
+                description = item.description,
+                priceKilo = item.priceKilo,
+                expectedQuantityInDay = item.expectedQuantityInDay,
+            };
+        }
+        public static Products ProductModelDTOProdcuts(this ProductModel product)
+        {
+            return new Products()
+            {
+                id=product.product_id,
+                name = product.product_name,
+                description= product.product_description,
+                imagePath = product.product_imagePath,
+                price = product.product_price,
+            };
+        }
+        public static ProductModel ProductsDTOProdcutModel(this Products product)
+        {
+            return new ProductModel()
+            {
+               product_id = product.id,
+               product_name = product.name,
+               product_description = product.description,
+               product_imagePath = product.imagePath,
+               product_price = product.price,
+               cat_id = product.Categories.id,
+               cat_name = product.Categories.name
             };
         }
     }

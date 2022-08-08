@@ -1,83 +1,33 @@
 ﻿using FinalProjectBkEndApi.DTO;
-using FinalProjectBkEndApi.Models;
 using FinalProjectBkEndApi.Repositories;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using FinalProjectBkEndApi.Helper;
-using Microsoft.EntityFrameworkCore;
 
 namespace FinalProjectBkEndApi.Services
 {
-    public class UserServices : IUserServices
+    public class UserServices : IGenericServices<IParentModel, UserModel>
     {
-        private readonly RestaurantDbContext _DbContext;
-        private readonly IConfiguration _config;
-        public UserServices(RestaurantDbContext DbContext, IConfiguration config)
+        public IParentModel Get(int id)
         {
-            _DbContext = DbContext;
-            _config = config;
-        }
-        public string Login([FromBody] LoginModel model)
-        {
-            var userModel = _DbContext.Users.Where(user => user.username == model.username && user.password == model.password).Include(r=>r.Role).FirstOrDefault();
-            if (userModel != null)
-            {
-                return GenerateJSONWebToken(userModel);
-            }
-            else
-            {
-                return null;
-            }
+            throw new System.NotImplementedException();
         }
 
-        public bool Register([FromBody] RegisterModel userModel)
+        public IEnumerable<IParentModel> GetAll()
         {
-            var user = _DbContext.Users.Where(
-                userM => userM.username == userModel.username &&
-                userM.password == userModel.password &&
-                userM.phone == userModel.phone).FirstOrDefault();
-            if (user != null)
-            {
-                return false;
-            }
-            else
-            {
-                var newUser = userModel.RegisterDTOUser();
-                var Roles = _DbContext.Roles.Where(r => r.permission == Permission.User.ToString()).FirstOrDefault();
-                newUser.Role = Roles;
-                _DbContext.Users.Add(newUser);
-                _DbContext.SaveChanges();
-                return true;
-            }
+            throw new System.NotImplementedException();
         }
 
-        private string GenerateJSONWebToken(User userModel)
+        public IParentModel Post(UserModel entity)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Secret"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var authClaims = new List<Claim>()
-            {
-                
-                new Claim("id", userModel.id.ToString()),
-                new Claim("username", userModel.username),
-                new Claim(ClaimTypes.Role, userModel.Role.permission),
+            throw new System.NotImplementedException();
+        }
 
-            };
-
-
-            var token = new JwtSecurityToken(
-                claims:authClaims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: credentials
-                );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+        public bool Put(int id, UserModel model)
+        {
+            throw new System.NotImplementedException();
+        }
+        public bool Delete(int id)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

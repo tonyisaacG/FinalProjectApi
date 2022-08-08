@@ -24,12 +24,12 @@ namespace FinalProjectBkEndApi.Models
             .Property(order=>order.date).HasDefaultValueSql("getdate()");
             #endregion
 
-            #region Order Config
+            #region PurchasesConsumption Config
             modelBuilder.Entity<PurchasesConsumption>()
             .Property(pur => pur.date).HasDefaultValueSql("getdate()");
             #endregion
 
-            #region  Material Config
+            #region  items Config
             modelBuilder.Entity<Items>()
             .HasCheckConstraint("CK_Properties_ExpectQ_NowQ", "[expectedQuantityInDay] <= [totalQuantity]");
             #endregion
@@ -43,7 +43,15 @@ namespace FinalProjectBkEndApi.Models
             modelBuilder.Entity<PurchasesConsumptionDetails>()
                 .HasKey(purD => new { purD.item_id, purD.purchases_id });
             #endregion
-            
+
+            #region user Config 
+            modelBuilder.Entity<User>().HasIndex(u => u.phone).IsUnique();
+            modelBuilder.Entity<User>().HasIndex(u =>new { u.password,u.username }).IsUnique();
+            #endregion
+
+            #region items config
+            modelBuilder.Entity<Items>().Property(i => i.totalQuantity).HasDefaultValue(0);
+            #endregion
         }
 
     }
