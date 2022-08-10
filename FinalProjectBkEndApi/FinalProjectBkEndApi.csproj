@@ -21,8 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Resources\Category\" />
+    <Folder Include="Resources\Products\" />
     <Folder Include="Uploads\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
 
 </Project>

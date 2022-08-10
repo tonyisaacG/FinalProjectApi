@@ -105,7 +105,7 @@ namespace FinalProjectBkEndApi.Controllers
                 {
                     FileInfo f1 = new FileInfo(file.FileName);
                     var newfilename = Guid.NewGuid().ToString() + "_" + f1.Extension;
-                    path = Path.Combine("", _IwebHostEnvironment.ContentRootPath + "\\Resources\\Category" + newfilename);
+                    path = Path.Combine("", _IwebHostEnvironment.ContentRootPath + "\\Resources\\Category\\" + newfilename);
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         file.CopyTo(stream);

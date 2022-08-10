@@ -149,7 +149,7 @@ namespace FinalProjectBkEndApi.Controllers
                 {
                     FileInfo f1 = new FileInfo(file.FileName);
                     var newfilename = Guid.NewGuid().ToString() + "_" + f1.Extension;
-                    var path = Path.Combine("", _IwebHostEnvironment.ContentRootPath + "\\Resources\\Products" + newfilename);
+                    var path = Path.Combine("", _IwebHostEnvironment.ContentRootPath + "\\Resources\\Products\\" + newfilename);
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         file.CopyTo(stream);
