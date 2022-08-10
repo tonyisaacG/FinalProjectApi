@@ -2,7 +2,7 @@
 
 namespace FinalProjectBkEndApi.DTO
 {
-    public class UserModel
+    public class UserModel:IParentModel
     {
         public int user_id { get; set; }
         public string user_name { get; set; }
@@ -13,8 +13,7 @@ namespace FinalProjectBkEndApi.DTO
         [Required, RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")]
         public string password { get; set; }
 
-        public int permisiion_id { get; set; }
-        [Required]
+        public int permission_id { get; set; }
         public string permission { get; set; }
 
     }

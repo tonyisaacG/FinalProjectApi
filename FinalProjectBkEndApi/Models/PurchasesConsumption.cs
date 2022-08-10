@@ -20,11 +20,10 @@ namespace FinalProjectBkEndApi.Models
         [Required]
         public DateTime date { get; set; }
         [Column(TypeName = "money")]
-        [Required]
         public int totalPrice { get; set; }
         [StringLength(20)]
         public string vendorName { get; set; }
-        public string type { get; set; }
+        public string type { get; set; } = BillType.Buy.ToString();
         #endregion
 
         #region Relation

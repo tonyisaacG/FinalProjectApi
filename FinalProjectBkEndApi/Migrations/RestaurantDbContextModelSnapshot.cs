@@ -41,6 +41,42 @@ namespace FinalProjectBkEndApi.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("FinalProjectBkEndApi.Models.Expenses", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("date");
+
+                    b.Property<string>("type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Expenses");
+                });
+
+            modelBuilder.Entity("FinalProjectBkEndApi.Models.ExpensesDetails", b =>
+                {
+                    b.Property<int>("item_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("expenses_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("item_id", "expenses_id");
+
+                    b.HasIndex("expenses_id");
+
+                    b.ToTable("ExpensesDetails");
+                });
+
             modelBuilder.Entity("FinalProjectBkEndApi.Models.Items", b =>
                 {
                     b.Property<int>("id")
@@ -49,7 +85,8 @@ namespace FinalProjectBkEndApi.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("expectedQuantityInDay")
                         .HasColumnType("int");
@@ -62,13 +99,13 @@ namespace FinalProjectBkEndApi.Migrations
                         .HasColumnType("money");
 
                     b.Property<int>("totalQuantity")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.HasKey("id");
 
                     b.ToTable("Items");
-
-                    b.HasCheckConstraint("CK_Properties_ExpectQ_NowQ", "[expectedQuantityInDay] < [totalQuantity]");
                 });
 
             modelBuilder.Entity("FinalProjectBkEndApi.Models.Order", b =>
@@ -91,7 +128,8 @@ namespace FinalProjectBkEndApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("notes")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("orderStatus")
                         .IsRequired()
@@ -104,7 +142,7 @@ namespace FinalProjectBkEndApi.Migrations
                     b.Property<string>("phoneClient")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("totalPrice")
+                    b.Property<decimal?>("totalPrice")
                         .HasColumnType("money");
 
                     b.Property<int?>("user_id")
@@ -126,7 +164,8 @@ namespace FinalProjectBkEndApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("desription")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("priceMeal")
                         .HasColumnType("money");
@@ -152,7 +191,8 @@ namespace FinalProjectBkEndApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("imagePath")
                         .HasColumnType("nvarchar(max)");
@@ -186,8 +226,8 @@ namespace FinalProjectBkEndApi.Migrations
                     b.Property<decimal>("totalPrice")
                         .HasColumnType("money");
 
-                    b.Property<int>("type")
-                        .HasColumnType("int");
+                    b.Property<string>("type")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("vendorName")
                         .HasMaxLength(20)
@@ -250,22 +290,46 @@ namespace FinalProjectBkEndApi.Migrations
 
                     b.Property<string>("password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("phone")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("id");
 
-                    b.HasIndex("Role_id")
+                    b.HasIndex("Role_id");
+
+                    b.HasIndex("phone")
                         .IsUnique()
-                        .HasFilter("[Role_id] IS NOT NULL");
+                        .HasFilter("[phone] IS NOT NULL");
+
+                    b.HasIndex("password", "username")
+                        .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("FinalProjectBkEndApi.Models.ExpensesDetails", b =>
+                {
+                    b.HasOne("FinalProjectBkEndApi.Models.Expenses", "Expenses")
+                        .WithMany("ExpensesDetails")
+                        .HasForeignKey("expenses_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FinalProjectBkEndApi.Models.Items", "Items")
+                        .WithMany()
+                        .HasForeignKey("item_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Expenses");
+
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("FinalProjectBkEndApi.Models.Order", b =>
@@ -327,8 +391,8 @@ namespace FinalProjectBkEndApi.Migrations
             modelBuilder.Entity("FinalProjectBkEndApi.Models.User", b =>
                 {
                     b.HasOne("FinalProjectBkEndApi.Models.Role", "Role")
-                        .WithOne("Users")
-                        .HasForeignKey("FinalProjectBkEndApi.Models.User", "Role_id");
+                        .WithMany("Users")
+                        .HasForeignKey("Role_id");
 
                     b.Navigation("Role");
                 });
@@ -336,6 +400,11 @@ namespace FinalProjectBkEndApi.Migrations
             modelBuilder.Entity("FinalProjectBkEndApi.Models.Categories", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("FinalProjectBkEndApi.Models.Expenses", b =>
+                {
+                    b.Navigation("ExpensesDetails");
                 });
 
             modelBuilder.Entity("FinalProjectBkEndApi.Models.Items", b =>

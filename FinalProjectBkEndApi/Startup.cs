@@ -5,12 +5,16 @@ using FinalProjectBkEndApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.IO;
 using System.Text;
 
 namespace FinalProjectBkEndApi
@@ -91,11 +95,20 @@ namespace FinalProjectBkEndApi
             #region Scrop injection services
             services.AddScoped<IAuthServices, AuthServices>();
             services.AddScoped<IOrderServices, OrderServices>();
-            services.AddScoped<IBill<PurchasesSalesModel>, SellBuyServices>();
+            services.AddScoped<IBill<PurchasesSalesModel>, PurchasesServices>();
+            services.AddScoped<IExpenses<ExpensesModel>, ExpensesServices>();
             services.AddScoped<ItemsServices, ItemsServices>();
             services.AddScoped<ProductServices, ProductServices>();
-
+            services.AddScoped<IGenericServices<IParentModel,UserModel>, UserServices>();
+            services.AddScoped<CategoryServices, CategoryServices>();
             #endregion
+
+            services.Configure<FormOptions>(o =>
+            {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,6 +122,18 @@ namespace FinalProjectBkEndApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FinalProjectBkEndApi v1"));
             }
+
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider
+                  (Path.Combine(Directory.GetCurrentDirectory(), "Uploads",
+                  Directory.GetCurrentDirectory(), "Uploads")),
+                RequestPath = "/Uploads",
+
+            });
+
+
             app.UseRouting();
 
             app.UseCors(AllowOrigins);
@@ -120,6 +145,8 @@ namespace FinalProjectBkEndApi
                 endpoints.MapControllers();
             });
             #endregion
+
+
         }
     }
 }

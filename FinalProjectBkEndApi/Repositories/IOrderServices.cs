@@ -13,6 +13,13 @@ namespace FinalProjectBkEndApi.Repositories
         List<Order> GetInDay();
         List<Order> GetInDayStatus(StatusOrder statusOrder);
         List<Order> GetByRangeDate(string fromDate,string toDate);
+        bool EditOrderDetails(int idOrder, int idProduct, OrderDetailsModel orderDetailsModel);
+        bool AddOrderDetails(int idOrder, OrderDetailsModel orderDetails);
+        bool ChangeStatusOrder(int idOrder, StatusOrder typeOrder);
+        bool DeleteOrderDetails(int idOrder, int idProduct);
+
+
+
 
     }
 }

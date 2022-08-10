@@ -28,14 +28,21 @@ namespace FinalProjectBkEndApi.Services
 
         public IEnumerable<IParentModel> GetAll()
         {
-            var products = _DbContext.Products.Include(cat => cat.Categories).ToList();
-            List<ProductModel> productModel = new List<ProductModel>();
-            foreach(var product in products)
+            try
             {
-                productModel.Add(product.ProductsDTOProdcutModel());
+                var products = _DbContext.Products.Include(cat => cat.Categories).ToList();
+                List<ProductModel> productModel = new List<ProductModel>();
+                foreach (var product in products)
+                {
+                    productModel.Add(product.ProductsDTOProdcutModel());
+                }
+                return productModel;
             }
-            return productModel;
+            catch { return null; }
         }
+
+
+       
 
         public IParentModel Post(ProductModel entity)
         {
@@ -43,9 +50,18 @@ namespace FinalProjectBkEndApi.Services
             {
                 var newProduct = entity.ProductModelDTOProdcuts();
                 newProduct.Categories = _DbContext.Categories.FirstOrDefault(cat => cat.id==entity.cat_id);
-                _DbContext.Products.Add(newProduct);
-                _DbContext.SaveChanges();
-                return (IParentModel)entity;
+                if (newProduct.Categories != null)
+                {
+                    _DbContext.Products.Add(newProduct);
+                    _DbContext.SaveChanges();
+                    return (IParentModel)newProduct;
+
+                }
+                else
+                {
+                    return null;
+                }
+
             }
             else
             {
@@ -60,12 +76,20 @@ namespace FinalProjectBkEndApi.Services
             {
                 product.name = entity.product_name;
                 product.description = entity.product_description;
-                product.imagePath = entity.product_imagePath;
+              //  product.imagePath = entity.product_imagePath;
                 product.price = entity.product_price;
                 product.Categories = _DbContext.Categories.FirstOrDefault(cat => cat.id == entity.cat_id);
-                _DbContext.Entry(product).State = EntityState.Modified;
-                _DbContext.SaveChanges();
-                return true;
+                if (product.Categories != null)
+                {
+                    _DbContext.Entry(product).State = EntityState.Modified;
+                    _DbContext.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+             
             }
             else
             {

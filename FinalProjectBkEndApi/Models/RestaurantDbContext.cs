@@ -14,6 +14,8 @@ namespace FinalProjectBkEndApi.Models
         public virtual DbSet<OrderDetails> OrderDetails { get; set; }
         public virtual DbSet<PurchasesConsumption> PurchasesConsumptions { get; set; }
         public virtual DbSet<PurchasesConsumptionDetails> PurchasesDetails { get; set; }
+        public virtual DbSet<Expenses> Expenses { get; set; }
+        public virtual DbSet<ExpensesDetails> ExpensesDetails { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
 
@@ -30,13 +32,18 @@ namespace FinalProjectBkEndApi.Models
             #endregion
 
             #region  items Config
-            modelBuilder.Entity<Items>()
-            .HasCheckConstraint("CK_Properties_ExpectQ_NowQ", "[expectedQuantityInDay] <= [totalQuantity]");
+            //modelBuilder.Entity<Items>()
+            //.HasCheckConstraint("CK_Properties_ExpectQ_NowQ", "[expectedQuantityInDay] <= [totalQuantity]");
             #endregion
 
             #region Order Details Config
             modelBuilder.Entity<OrderDetails>()
                 .HasKey(orderD => new { orderD.product_id, orderD.order_id });
+            #endregion
+
+            #region Expense Details Config
+            modelBuilder.Entity<ExpensesDetails>()
+                .HasKey(e => new { e.item_id, e.expenses_id });
             #endregion
 
             #region Purchases Details Config

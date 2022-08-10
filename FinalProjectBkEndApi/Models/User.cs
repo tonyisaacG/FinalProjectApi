@@ -1,10 +1,11 @@
+using FinalProjectBkEndApi.DTO;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinalProjectBkEndApi.Models
 {
-    public class User
+    public class User:IParentModel
     {
         #region Properties
         [Key]
@@ -21,7 +22,6 @@ namespace FinalProjectBkEndApi.Models
 
         #region Relation
         [ForeignKey("Role")]
-        
         public int? Role_id { get; set; }
         public virtual Role Role { get; set; }
         public virtual ICollection<Order> Orders { get; set; }

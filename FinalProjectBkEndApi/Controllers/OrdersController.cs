@@ -89,5 +89,53 @@ namespace FinalProjectBkEndApi.Controllers
             }
             return BadRequest("data is not valid");
         }
+
+        ///[HttpPost("AddOrderDetails/{id:int}")]
+        [HttpPost("AddOrderDetails/{id:int}")]
+        public IActionResult AddOrderDetails(int id,OrderDetailsModel orderModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var orderbool = _Oservices.AddOrderDetails(id,orderModel);
+                return Ok("Ok");
+            }
+            return BadRequest("data is not valid");
+        }
+        [HttpPut("EditOrderDetails/{idorder:int}/{idproduct:int}")]
+        public IActionResult EditOrderDetails(int idorder,int idproduct, OrderDetailsModel orderModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var orderbool = _Oservices.EditOrderDetails(idorder,idproduct, orderModel);
+                return Ok("updated");
+            }
+            return BadRequest("data is not valid");
+        }
+        [HttpDelete("DeleteOrderDetails/{idorder:int}/{idproduct:int}")]
+        public IActionResult DeleteOrderDetails(int idorder, int idproduct)
+        {
+            try
+            {
+                var orderbool = _Oservices.DeleteOrderDetails(idorder, idproduct);
+                return Ok("Deleted");
+            }
+            catch
+            {
+                return BadRequest("data is not valid");
+            }
+        }
+        [HttpPut("changetype/{id:int}/{type}")]
+        public IActionResult ChangeStatusOrder(int id,StatusOrder type)
+        {
+            var order = _Oservices.ChangeStatusOrder(id, type);
+            if (order)
+            {
+                return Ok("change type");
+            }
+            else
+            {
+                return NotFound("this order not found");
+            }
+        }
     }
 }

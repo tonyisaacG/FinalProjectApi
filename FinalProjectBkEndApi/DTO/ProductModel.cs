@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinalProjectBkEndApi.DTO
 {
@@ -12,10 +13,10 @@ namespace FinalProjectBkEndApi.DTO
         public int product_price { get; set; }
         [StringLength(50)]
         public string product_description { get; set; }
+        public IFormFile product_imagePathSrc { get; set; }
         public string product_imagePath { get; set; }
 
         public int cat_id { get; set; }
-        [Required]
         public string cat_name { get; set; }
     }
 }

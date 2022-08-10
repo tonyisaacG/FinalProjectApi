@@ -1,6 +1,7 @@
 ﻿using FinalProjectBkEndApi.DTO;
 using FinalProjectBkEndApi.Models;
 using FinalProjectBkEndApi.Services;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 
@@ -144,9 +145,71 @@ namespace FinalProjectBkEndApi.Helper
                product_description = product.description,
                product_imagePath = product.imagePath,
                product_price = product.price,
-               cat_id = product.Categories.id,
-               cat_name = product.Categories.name
+               cat_id = product.Categories?.id??0,
+               cat_name = product.Categories?.name
             };
         }
+
+
+        public static UserModel UsersDTOUserModel(this User user)
+        {
+            return new UserModel()
+            {
+                user_id = user.id,
+                user_name = user.name,
+                username = user.username,
+                phone = user.phone,
+                password = user.password,
+                permission_id = user.Role?.id??0,
+                permission = user.Role?.permission
+            };
+        }
+        public static User UserModelDTOUser(this UserModel user)
+        {
+            return new User()
+            {
+                name = user.user_name,
+                username = user.username,
+                phone = user.phone,
+                password = EncodePasswordToBase64(user.password),
+            };
+        }
+
+
+
+        public static ExpensesModel ExpensesDTOExpensesModel(this Expenses expenses)
+        {
+            var expensesModel = new ExpensesModel()
+            {
+                bill_id = expenses.id,
+                bill_date = expenses.date,
+                type = expenses.type,
+            };
+            foreach (var details in expenses.ExpensesDetails)
+            {
+                expensesModel.ExpensesDetailsModels.Add(new ExpensesDetailsModel()
+                {
+                    item_id = details.Items.id,
+                    item_name = details.Items.name,
+                    quantity = details.quantity
+                });
+            }
+            return expensesModel;
+        }
+        public static Expenses ExpensesModelDTExpenses(this ExpensesModel expenses)
+        {
+            return new Expenses()
+            {
+                id = expenses.bill_id,
+                date = expenses.bill_date,
+                type = expenses.type,
+            };
+        }
+
+
+
+
+
+
     }
 }

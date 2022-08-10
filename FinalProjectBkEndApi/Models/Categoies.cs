@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using FinalProjectBkEndApi.DTO;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinalProjectBkEndApi.Models
 {
-    public class Categories
+    public class Categories:IParentModel
     {
         #region properties
         [Key]

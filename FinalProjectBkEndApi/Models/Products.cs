@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using FinalProjectBkEndApi.DTO;
 
 namespace FinalProjectBkEndApi.Models
 {
-    public class Products
+    public class Products:IParentModel
     {
         #region properties
         [Key]

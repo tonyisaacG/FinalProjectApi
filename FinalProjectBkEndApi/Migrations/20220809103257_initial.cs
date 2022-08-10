@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FinalProjectBkEndApi.Migrations
 {
-    public partial class intiial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,21 +23,34 @@ namespace FinalProjectBkEndApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Expenses",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    date = table.Column<DateTime>(type: "date", nullable: false),
+                    type = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Expenses", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Items",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    totalQuantity = table.Column<int>(type: "int", nullable: false),
+                    totalQuantity = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     priceKilo = table.Column<decimal>(type: "money", nullable: false),
                     expectedQuantityInDay = table.Column<int>(type: "int", nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Items", x => x.id);
-                    table.CheckConstraint("CK_Properties_ExpectQ_NowQ", "[expectedQuantityInDay] < [totalQuantity]");
                 });
 
             migrationBuilder.CreateTable(
@@ -49,7 +62,7 @@ namespace FinalProjectBkEndApi.Migrations
                     date = table.Column<DateTime>(type: "date", nullable: false, defaultValueSql: "getdate()"),
                     totalPrice = table.Column<decimal>(type: "money", nullable: false),
                     vendorName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    type = table.Column<int>(type: "int", nullable: false)
+                    type = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -77,7 +90,7 @@ namespace FinalProjectBkEndApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     price = table.Column<decimal>(type: "money", nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     imagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     catergory_id = table.Column<int>(type: "int", nullable: true)
                 },
@@ -90,6 +103,31 @@ namespace FinalProjectBkEndApi.Migrations
                         principalTable: "Categories",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ExpensesDetails",
+                columns: table => new
+                {
+                    expenses_id = table.Column<int>(type: "int", nullable: false),
+                    item_id = table.Column<int>(type: "int", nullable: false),
+                    quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExpensesDetails", x => new { x.item_id, x.expenses_id });
+                    table.ForeignKey(
+                        name: "FK_ExpensesDetails_Expenses_expenses_id",
+                        column: x => x.expenses_id,
+                        principalTable: "Expenses",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ExpensesDetails_Items_item_id",
+                        column: x => x.item_id,
+                        principalTable: "Items",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -125,9 +163,9 @@ namespace FinalProjectBkEndApi.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    username = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    phone = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    password = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Role_id = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -148,8 +186,8 @@ namespace FinalProjectBkEndApi.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     date = table.Column<DateTime>(type: "date", nullable: false, defaultValueSql: "getdate()"),
-                    totalPrice = table.Column<decimal>(type: "money", nullable: false),
-                    notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    totalPrice = table.Column<decimal>(type: "money", nullable: true),
+                    notes = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     nameClient = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     phoneClient = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AddressClient = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -176,7 +214,7 @@ namespace FinalProjectBkEndApi.Migrations
                     product_id = table.Column<int>(type: "int", nullable: false),
                     quantityMeal = table.Column<int>(type: "int", nullable: false),
                     priceMeal = table.Column<decimal>(type: "money", nullable: false),
-                    desription = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    desription = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -194,6 +232,11 @@ namespace FinalProjectBkEndApi.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExpensesDetails_expenses_id",
+                table: "ExpensesDetails",
+                column: "expenses_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_order_id",
@@ -216,20 +259,37 @@ namespace FinalProjectBkEndApi.Migrations
                 column: "purchases_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Users_password_username",
+                table: "Users",
+                columns: new[] { "password", "username" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_phone",
+                table: "Users",
+                column: "phone",
+                unique: true,
+                filter: "[phone] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_Role_id",
                 table: "Users",
-                column: "Role_id",
-                unique: true,
-                filter: "[Role_id] IS NOT NULL");
+                column: "Role_id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ExpensesDetails");
+
+            migrationBuilder.DropTable(
                 name: "OrderDetails");
 
             migrationBuilder.DropTable(
                 name: "PurchasesDetails");
+
+            migrationBuilder.DropTable(
+                name: "Expenses");
 
             migrationBuilder.DropTable(
                 name: "Orders");

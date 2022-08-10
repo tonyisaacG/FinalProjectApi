@@ -31,15 +31,24 @@ namespace FinalProjectBkEndApi.Services
 
         public IEnumerable<IParentModel> GetAll()
         {
-           return (IEnumerable<IParentModel>)_DbContext.Items.ToList();
+            try
+            {
+                var itemLst = _DbContext.Items.ToList();
+                if (itemLst != null)
+                    return itemLst;
+                else
+                    return null;
+            }
+            catch { return null; }
         }
 
         public IParentModel Post(ItemsModel entity)
         {
-
+            
             if(entity!=null)
             {
-                _DbContext.Items.Add(entity.ItemsModelDTOItems());
+                var item = entity.ItemsModelDTOItems();
+                _DbContext.Entry(item).State = EntityState.Added;
                 _DbContext.SaveChanges();
                 return (IParentModel)entity;
             }

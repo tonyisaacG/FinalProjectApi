@@ -13,7 +13,7 @@ namespace FinalProjectBkEndApi.Models
         public int quantityMeal { get; set; }
         [Column(TypeName ="money")]
         public int priceMeal { get;set; }
-        [MinLength(50)]
+        [StringLength(50)]
         public string desription { get; set; }
         #endregion
 

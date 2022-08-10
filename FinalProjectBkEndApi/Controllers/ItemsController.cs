@@ -10,7 +10,7 @@ namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="Admin")]
+    
     public class ItemsController : ControllerBase
     {
         public readonly ItemsServices _Iservices;
@@ -46,7 +46,7 @@ namespace FinalProjectBkEndApi.Controllers
                 }
                 else
                 {
-                    return BadRequest();
+                    return BadRequest("can not create");
                 }
             }
             else

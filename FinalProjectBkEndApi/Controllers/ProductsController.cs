@@ -2,25 +2,37 @@
 using FinalProjectBkEndApi.Models;
 using FinalProjectBkEndApi.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using System;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ProductsController : ControllerBase
     {
         public readonly ProductServices _Pservices;
-        public ProductsController(ProductServices Pservices)
+        private readonly IHostEnvironment _IwebHostEnvironment;
+
+
+        public ProductsController(ProductServices Pservices, IHostEnvironment hostEnvironment)
         {
             _Pservices = Pservices;
+            this._IwebHostEnvironment = hostEnvironment;
+
         }
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_Pservices.GetAll());
+            var pro = _Pservices.GetAll();
+            if (pro == null)
+                return NotFound("not exist any item");
+            return Ok(pro);
         }
         [HttpGet("{id:int}")]
         public IActionResult GetOne(int id)
@@ -32,20 +44,61 @@ namespace FinalProjectBkEndApi.Controllers
             }
             return Ok(product);
         }
+        //[HttpPost("postImage")]
+        #region
+        //public IActionResult post( ProductModel product)
+        //{
+
+
+        //    try
+        //    {
+        //        var file = Request.Form.Files[0];
+        //        var folderName = Path.Combine("resource", "Images");
+        //        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+        //        if (file.Length > 0)
+        //        {
+        //            var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+        //            var fullPath = Path.Combine(pathToSave, fileName);
+        //            var dbPath = Path.Combine(folderName, fileName);
+        //            using (var stream = new FileStream(fullPath, FileMode.Create))
+        //            {
+        //                file.CopyTo(stream);
+        //            }
+        //            return Ok(new { dbPath });
+        //        }
+        //        else
+        //        {
+        //            return Ok("ok");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, $"Internal server error: {ex}");
+        //    }
+
+        //}
+        #endregion
         [HttpPost]
-        public IActionResult Post(ProductModel product)
+        public IActionResult Post([FromForm] ProductModel product)
         {
             if (ModelState.IsValid)
             {
-                var ite = _Pservices.Post(product);
-                if (ite != null)
+                try
                 {
-                    return Ok("created product");
+                    var productModel = UploadImage(product);
+                    var ite = _Pservices.Post(productModel);                    
+                    if (ite != null)
+                    {
+                        return Ok("created product");
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+
                 }
-                else
-                {
-                    return BadRequest();
-                }
+                catch { return NotFound(); }
+              
             }
             else
             {
@@ -85,5 +138,42 @@ namespace FinalProjectBkEndApi.Controllers
                 return NotFound("not found product");
             }
         }
+
+
+        private ProductModel UploadImage(ProductModel product)
+        {
+            var files = HttpContext.Request.Form.Files;
+            if (files != null && files.Count > 0)
+            {
+                foreach (var file in files)
+                {
+                    FileInfo f1 = new FileInfo(file.FileName);
+                    var newfilename = Guid.NewGuid().ToString() + "_" + f1.Extension;
+                    var path = Path.Combine("", _IwebHostEnvironment.ContentRootPath + "\\Resources\\Products" + newfilename);
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    };
+                    product.product_imagePath = path;
+                }
+            }
+            return product;
+        }
+        //private string UploadedFile(ProductModel model)
+        //{
+        //    string uniqueFileName = null;
+
+        //    if (model.product_imagePath != null)
+        //    {
+        //        string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "Resources");
+        //        uniqueFileName = Guid.NewGuid().ToString() + "_" + model.product_imagePath.FileName;
+        //        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+        //        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        //        {
+        //            model.product_imagePath.CopyTo(fileStream);
+        //        }
+        //    }
+        //    return uniqueFileName;
+        //}
     }
 }
