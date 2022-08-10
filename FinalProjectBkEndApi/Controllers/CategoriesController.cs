@@ -40,13 +40,12 @@ namespace FinalProjectBkEndApi.Controllers
             return Ok(item);
         }
         [HttpPost]
-        public IActionResult Post([FromForm] CategoryModel cat)
+        public IActionResult Post(Categories cat)
         {
             if (ModelState.IsValid)
             {
-                var catv = UploadImage(cat);
-                var newCat = new Categories() { id = 0, description = cat.description, name = cat.name, imagePath = catv };
-                var ite = _Cservices.Post(newCat);
+               
+                var ite = _Cservices.Post(cat);
                 if (ite != null)
                 {
                     return Ok("created category");
@@ -95,26 +94,26 @@ namespace FinalProjectBkEndApi.Controllers
             }
 
         }
-        private string UploadImage(CategoryModel cat)
-        {
-            var files = HttpContext.Request.Form.Files;
-            var path="";
-            if (files != null && files.Count > 0)
-            {
-                foreach (var file in files)
-                {
-                    FileInfo f1 = new FileInfo(file.FileName);
-                    var newfilename = Guid.NewGuid().ToString() + "_" + f1.Extension;
-                    path = Path.Combine("", _IwebHostEnvironment.ContentRootPath + "\\Resources\\Category\\" + newfilename);
-                    using (var stream = new FileStream(path, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    };
+        //private string UploadImage(CategoryModel cat)
+        //{
+        //    var files = HttpContext.Request.Form.Files;
+        //    var path="";
+        //    if (files != null && files.Count > 0)
+        //    {
+        //        foreach (var file in files)
+        //        {
+        //            FileInfo f1 = new FileInfo(file.FileName);
+        //            var newfilename = Guid.NewGuid().ToString() + "_" + f1.Extension;
+        //            path = Path.Combine("", _IwebHostEnvironment.ContentRootPath + "\\Resources\\Category\\" + newfilename);
+        //            using (var stream = new FileStream(path, FileMode.Create))
+        //            {
+        //                file.CopyTo(stream);
+        //            };
                    
-                }
-            }
-            return path;
-        }
+        //        }
+        //    }
+        //    return path;
+        //}
 
     }
 }
