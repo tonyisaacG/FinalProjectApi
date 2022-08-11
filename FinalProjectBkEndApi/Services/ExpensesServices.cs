@@ -16,7 +16,7 @@ namespace FinalProjectBkEndApi.Services
             _DbContext = DbContext;
         }
 
-        public bool AddBillDetails(int idBill, ExpensesDetailsModel ExpensesDetailsModel)
+        public IParentModel AddBillDetails(int idBill, ExpensesDetailsModel ExpensesDetailsModel)
         {
             var expenses = _DbContext.Expenses.Where(e => e.id == idBill).FirstOrDefault();
             var item = _DbContext.Items.Where(i => i.id == ExpensesDetailsModel.item_id).FirstOrDefault();
@@ -32,17 +32,17 @@ namespace FinalProjectBkEndApi.Services
                     newobject.Items = item;
                     _DbContext.Entry(newobject).State = EntityState.Added;
                     _DbContext.SaveChanges();
-                    return true;
+                    return newobject;
                 }
                 else
                 {
                     oldDetails.quantity += ExpensesDetailsModel.quantity;
                     _DbContext.Entry(oldDetails).State = EntityState.Modified;
                     _DbContext.SaveChanges();
-                    return true;
+                    return oldDetails;
                 }
             }
-            else { return false; }
+            else { return null; }
         }
 
         public bool ChangeTypeBill(int idBill, BillType billType)
@@ -187,7 +187,7 @@ namespace FinalProjectBkEndApi.Services
             return null;
         }
 
-        public bool Put(int id, ExpensesModel model)
+        public IParentModel Put(int id, ExpensesModel model)
         {
             var oldExpenses = _DbContext.Expenses.Include(p => p.ExpensesDetails).FirstOrDefault(p => p.id == id);
             if (oldExpenses != null)
@@ -196,9 +196,9 @@ namespace FinalProjectBkEndApi.Services
                 oldExpenses.type = model.type;
                 _DbContext.Entry(oldExpenses).State = EntityState.Modified;
                 _DbContext.SaveChanges();
-                return true;
+                return oldExpenses;
             }
-            return false;
+            return null;
 
         }
     }

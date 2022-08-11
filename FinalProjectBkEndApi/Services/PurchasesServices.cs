@@ -16,7 +16,7 @@ namespace FinalProjectBkEndApi.Services
             _DbContext = DbContext;
         }
 
-        public bool AddBillDetails(int idBill, PurchasesSalesDetailsModel purchasesSalesDetailsModel)
+        public IParentModel AddBillDetails(int idBill, PurchasesSalesDetailsModel purchasesSalesDetailsModel)
         {
             var purchases = _DbContext.PurchasesConsumptions.Where(od => od.id == idBill).FirstOrDefault();
             var item = _DbContext.Items.Where(i => i.id == purchasesSalesDetailsModel.item_id).FirstOrDefault();
@@ -33,7 +33,7 @@ namespace FinalProjectBkEndApi.Services
                     newobject.Items = item;
                     _DbContext.Entry(newobject).State = EntityState.Added;
                     _DbContext.SaveChanges();
-                    return true;
+                    return newobject;
                 }
                 else
                 {
@@ -41,10 +41,10 @@ namespace FinalProjectBkEndApi.Services
                     oldPurchasesDetails.price = purchasesSalesDetailsModel.quantity * item.priceKilo;
                     _DbContext.Entry(oldPurchasesDetails).State = EntityState.Modified;
                     _DbContext.SaveChanges();
-                    return true;
+                    return oldPurchasesDetails;
                 }
             }
-            else { return false; }
+            else { return null; }
         }
 
         public bool ChangeTypeBill(int idBill, BillType billType)
@@ -162,7 +162,7 @@ namespace FinalProjectBkEndApi.Services
             return null;
         }
 
-        public bool Put(int id, PurchasesSalesModel model)
+        public IParentModel Put(int id, PurchasesSalesModel model)
         {
             var oldPurchases = _DbContext.PurchasesConsumptions.Include(p=>p.PurchasesDetails).FirstOrDefault(p => p.id == id);
             if (oldPurchases != null)
@@ -173,9 +173,9 @@ namespace FinalProjectBkEndApi.Services
                 oldPurchases.type = model.type;
                 _DbContext.Entry(oldPurchases).State = EntityState.Modified;
                 _DbContext.SaveChanges();
-                return true;
+                return oldPurchases;
             }
-            return false;
+            return null;
         }
     }
 }

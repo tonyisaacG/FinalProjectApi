@@ -25,7 +25,7 @@ namespace FinalProjectBkEndApi.DTO
         public string phoneClient { get; set; }
         [Required]
         [StringLength(50)]
-        public string AddressClient { get; set; }
+        public string addressClient { get; set; }
         public string username { get; set; }
         public List<OrderDetailsModel> orderDetailsModels { get; set; } = new List<OrderDetailsModel>();
 

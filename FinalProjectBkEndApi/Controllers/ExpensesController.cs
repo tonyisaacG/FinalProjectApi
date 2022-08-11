@@ -73,8 +73,8 @@ namespace FinalProjectBkEndApi.Controllers
             if (ModelState.IsValid)
             {
                 var purbool = _Eservices.AddBillDetails(id, expenses);
-                if (purbool)
-                    return Ok("Ok");
+                if (purbool!=null)
+                    return Ok(purbool);
                 else
                     return NotFound();
             }

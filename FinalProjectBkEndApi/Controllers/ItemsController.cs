@@ -42,7 +42,7 @@ namespace FinalProjectBkEndApi.Controllers
                 var ite = _Iservices.Post(item);
                 if (ite != null)
                 {
-                    return Ok("created item");
+                    return Ok(ite);
                 }
                 else
                 {
@@ -60,9 +60,9 @@ namespace FinalProjectBkEndApi.Controllers
             if (ModelState.IsValid)
             {
                 var itemBool = _Iservices.Put(id, item);
-                if (itemBool)
+                if (itemBool!=null)
                 {
-                    return Ok("data updated for item");
+                    return Ok(itemBool);
                 }
                 else
                 {

@@ -128,13 +128,13 @@ namespace FinalProjectBkEndApi.Controllers
         public IActionResult ChangeStatusOrder(int id,StatusOrder type)
         {
             var order = _Oservices.ChangeStatusOrder(id, type);
-            if (order)
+            if (order!=null)
             {
-                return Ok("change type");
+                return Ok(order);
             }
             else
             {
-                return NotFound("this order not found");
+                return NotFound();
             }
         }
     }

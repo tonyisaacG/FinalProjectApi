@@ -58,7 +58,7 @@ namespace FinalProjectBkEndApi.Services
             }
         }
 
-        public bool Put(int id, ItemsModel entity)
+        public IParentModel Put(int id, ItemsModel entity)
         {
             var item = _DbContext.Items.FirstOrDefault(i => i.id == id);
             if (item != null)
@@ -69,11 +69,11 @@ namespace FinalProjectBkEndApi.Services
                 item.expectedQuantityInDay = entity.expectedQuantityInDay;
                 _DbContext.Entry(item).State = EntityState.Modified;
                 _DbContext.SaveChanges();
-                return true;
+                return item;
             }
             else
             {
-                return false;
+                return null;
             }
         }
 

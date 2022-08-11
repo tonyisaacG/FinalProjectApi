@@ -10,9 +10,9 @@ namespace FinalProjectBkEndApi.DTO
         [Required]
         [Range(minimum:1,maximum:int.MaxValue)]
         public int quantityMeal { get; set; }
-        [Range(minimum:0,maximum:int.MaxValue)]
+        [Range(minimum:1,maximum:int.MaxValue)]
         public int priceMeal { get; set; }
-        [MinLength(50)]
+        //[Stri(50)]
         public string desription { get; set; } 
     }
 }

@@ -16,12 +16,17 @@ namespace FinalProjectBkEndApi.Services
         {
             _DbContext = DbContext;
         }
-        public List<Order> GetAll()
+        public List<OrderModel> GetAll()
         {
             var orders =  _DbContext.Orders.ToList();
             if (orders.Count > 0)
             {
-                return orders;
+                List<OrderModel> orderModels = new List<OrderModel>();
+                foreach(var order in orders)
+                {
+                    orderModels.Add(order.OrderDTOrderModel());
+                }
+                return orderModels;
             }
             else
                 return null;
@@ -143,7 +148,7 @@ namespace FinalProjectBkEndApi.Services
                 oldOrder.date = order.order_date;
                 oldOrder.notes = order.notes;
                 oldOrder.phoneClient = order.phoneClient;
-                oldOrder.AddressClient = order.AddressClient;
+                oldOrder.AddressClient = order.addressClient;
                 oldOrder.totalPrice = order.totalPrice;
                 oldOrder.nameClient = order.nameClient;
                 oldOrder.orderType = order.orderType;
@@ -171,7 +176,7 @@ namespace FinalProjectBkEndApi.Services
             }
             return false;
         }
-        public bool ChangeStatusOrder(int idOrder, StatusOrder typeOrder)
+        public OrderModel ChangeStatusOrder(int idOrder, StatusOrder typeOrder)
         {
             var order = _DbContext.Orders.FirstOrDefault(od => od.id == idOrder);
             if (order != null)
@@ -179,11 +184,11 @@ namespace FinalProjectBkEndApi.Services
                 order.orderStatus = typeOrder.ToString();
                 _DbContext.Entry(order).State = EntityState.Modified;
                 _DbContext.SaveChanges();
-                return true;
+                return order.OrderDTOrderModel();
             }
             else
             {
-                return false;
+                return null;
             }
         }
         public bool DeleteOrderDetails(int idOrder,int idProduct)

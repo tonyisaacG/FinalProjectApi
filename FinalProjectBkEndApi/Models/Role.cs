@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FinalProjectBkEndApi.DTO;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace FinalProjectBkEndApi.Models
@@ -9,7 +10,7 @@ namespace FinalProjectBkEndApi.Models
         Casher,
         User
     }
-    public class Role
+    public class Role:IParentModel
     {
         #region properties
         [Key]

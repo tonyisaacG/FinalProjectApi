@@ -42,7 +42,7 @@ namespace FinalProjectBkEndApi.Controllers
                 {
                     if (ite is UserModel)
                     {
-                        return Ok("created user");
+                        return Ok(user);
                     }
                     else
                     {
@@ -62,9 +62,9 @@ namespace FinalProjectBkEndApi.Controllers
             if (ModelState.IsValid)
             {
                 var userBool = _Uservices.Put(id, user);
-                if (userBool)
+                if (userBool!=null)
                 {
-                    return Ok("data updated for user");
+                    return Ok(userBool);
                 }
                 else
                 {

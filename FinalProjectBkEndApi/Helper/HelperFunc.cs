@@ -27,7 +27,7 @@ namespace FinalProjectBkEndApi.Helper
                 order_date = order.date,
                 totalPrice = order.totalPrice,
                 nameClient = order.nameClient,
-                AddressClient = order.AddressClient,
+                addressClient = order.AddressClient,
                 orderStatus = order.orderStatus,
                 orderType   =order.orderType,
                 phoneClient = order.phoneClient,
@@ -62,7 +62,7 @@ namespace FinalProjectBkEndApi.Helper
                 totalPrice = order.totalPrice,
                 phoneClient = order.phoneClient,
                 nameClient =  order.nameClient,
-                AddressClient = order.AddressClient,
+                AddressClient = order.addressClient,
                 notes = order.notes,
             };
         }
@@ -125,6 +125,7 @@ namespace FinalProjectBkEndApi.Helper
                 expectedQuantityInDay = item.expectedQuantityInDay,
             };
         }
+      
         public static Products ProductModelDTOProdcuts(this ProductModel product)
         {
             return new Products()

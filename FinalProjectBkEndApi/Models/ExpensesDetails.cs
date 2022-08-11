@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FinalProjectBkEndApi.DTO;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinalProjectBkEndApi.Models
 {
-    public class ExpensesDetails
+    public class ExpensesDetails:IParentModel
     {
         #region properties
         [ForeignKey("Expenses")]

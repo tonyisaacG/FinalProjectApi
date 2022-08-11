@@ -53,20 +53,27 @@ namespace FinalProjectBkEndApi.Services
 
         public IParentModel Post(Categories entity)
         {
-            if (entity != null)
+            try
             {
-                var cat = entity;
-                _DbContext.Entry(cat).State = EntityState.Added;
-                _DbContext.SaveChanges();
-                return (IParentModel)entity;
+                if (entity != null)
+                {
+                    var cat = entity;
+                    _DbContext.Entry(cat).State = EntityState.Added;
+                    _DbContext.SaveChanges();
+                    return (IParentModel)entity;
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
+            catch
             {
                 return null;
             }
         }
 
-        public bool Put(int id, Categories model)
+        public IParentModel Put(int id, Categories model)
         {
             var cat = _DbContext.Categories.FirstOrDefault(i => i.id == id);
             if (cat != null)
@@ -76,11 +83,11 @@ namespace FinalProjectBkEndApi.Services
                 cat.imagePath = model.imagePath;
                 _DbContext.Entry(cat).State = EntityState.Modified;
                 _DbContext.SaveChanges();
-                return true;
+                return cat;
             }
             else
             {
-                return false;
+                return null;
             }
         }
     }

@@ -68,7 +68,7 @@ namespace FinalProjectBkEndApi.Services
             }
         }
 
-        public bool Put(int id, UserModel model)
+        public IParentModel Put(int id, UserModel model)
         {
             var user = _DbContext.Users.FirstOrDefault(user => user.id == id);
             if (user != null)
@@ -80,11 +80,11 @@ namespace FinalProjectBkEndApi.Services
                 user.Role = _DbContext.Roles.FirstOrDefault(r => r.permission == model.permission.ToString());
                 _DbContext.Entry(user).State = EntityState.Modified;
                 _DbContext.SaveChanges();
-                return true;
+                return user;
             }
             else
             {
-                return false;
+                return null;
             }
         }
         public bool Delete(int id)

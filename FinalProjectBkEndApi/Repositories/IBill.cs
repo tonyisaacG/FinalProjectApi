@@ -8,7 +8,7 @@ namespace FinalProjectBkEndApi.Repositories
     {
         IParentModel Get(BillType type);
         bool EditBillDetails(int idBill, int idItem, PurchasesSalesDetailsModel purchasesSalesDetailsModel);
-        bool AddBillDetails(int idBill, PurchasesSalesDetailsModel purchasesSalesDetailsModel);
+        IParentModel AddBillDetails(int idBill, PurchasesSalesDetailsModel purchasesSalesDetailsModel);
         bool ChangeTypeBill(int idBill, BillType billType);
         bool DeleteBillDetails(int idBill, int idItem);
     }

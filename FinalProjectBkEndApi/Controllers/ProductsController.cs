@@ -89,7 +89,7 @@ namespace FinalProjectBkEndApi.Controllers
                     var ite = _Pservices.Post(productModel);                    
                     if (ite != null)
                     {
-                        return Ok("created product");
+                        return Ok(productModel);
                     }
                     else
                     {
@@ -111,9 +111,9 @@ namespace FinalProjectBkEndApi.Controllers
             if (ModelState.IsValid)
             {
                 var productBool = _Pservices.Put(id, product);
-                if (productBool)
+                if (productBool!=null)
                 {
-                    return Ok("data updated for product");
+                    return Ok(productBool);
                 }
                 else
                 {

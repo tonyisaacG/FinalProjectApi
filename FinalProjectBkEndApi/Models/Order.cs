@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using FinalProjectBkEndApi.DTO;
 
 namespace FinalProjectBkEndApi.Models
 {
@@ -17,7 +18,7 @@ namespace FinalProjectBkEndApi.Models
         Delivery,
         Restaurant,
     }
-    public class Order
+    public class Order:IParentModel
     {
         #region properties
         [Key]

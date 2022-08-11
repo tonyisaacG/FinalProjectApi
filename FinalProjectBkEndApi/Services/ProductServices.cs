@@ -69,7 +69,7 @@ namespace FinalProjectBkEndApi.Services
             }
         }
 
-        public bool Put(int id, ProductModel entity)
+        public IParentModel Put(int id, ProductModel entity)
         {
             var product = _DbContext.Products.FirstOrDefault(p => p.id == id);
             if (product != null)
@@ -83,17 +83,17 @@ namespace FinalProjectBkEndApi.Services
                 {
                     _DbContext.Entry(product).State = EntityState.Modified;
                     _DbContext.SaveChanges();
-                    return true;
+                    return product;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
              
             }
             else
             {
-                return false;
+                return null;
             }
         }
 

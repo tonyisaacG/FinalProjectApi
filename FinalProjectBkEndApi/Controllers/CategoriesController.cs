@@ -48,11 +48,11 @@ namespace FinalProjectBkEndApi.Controllers
                 var ite = _Cservices.Post(cat);
                 if (ite != null)
                 {
-                    return Ok("created category");
+                    return Ok(ite);
                 }
                 else
                 {
-                    return BadRequest("can not create");
+                    return BadRequest();
                 }
             }
             else
@@ -66,9 +66,9 @@ namespace FinalProjectBkEndApi.Controllers
             if (ModelState.IsValid)
             {
                 var catBool = _Cservices.Put(id, cat);
-                if (catBool)
+                if (catBool!=null)
                 {
-                    return Ok("data updated for category");
+                    return Ok(catBool);
                 }
                 else
                 {

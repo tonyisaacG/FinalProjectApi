@@ -6,7 +6,7 @@ namespace FinalProjectBkEndApi.Repositories
 {
     public interface IOrderServices
     {
-        List<Order> GetAll();
+        List<OrderModel> GetAll();
         OrderModel GetOrderDetails(int id);
         bool PutOrder(int id,OrderModel order);
         bool PostOrder(OrderModel order);
@@ -15,7 +15,7 @@ namespace FinalProjectBkEndApi.Repositories
         List<Order> GetByRangeDate(string fromDate,string toDate);
         bool EditOrderDetails(int idOrder, int idProduct, OrderDetailsModel orderDetailsModel);
         bool AddOrderDetails(int idOrder, OrderDetailsModel orderDetails);
-        bool ChangeStatusOrder(int idOrder, StatusOrder typeOrder);
+        OrderModel ChangeStatusOrder(int idOrder, StatusOrder typeOrder);
         bool DeleteOrderDetails(int idOrder, int idProduct);
 
 
