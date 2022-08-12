@@ -51,7 +51,10 @@ namespace FinalProjectBkEndApi.Controllers
             if (ModelState.IsValid)
             {
                 var expensesbool = _Eservices.Post(expensesModel);
-                return Ok(expensesbool);
+                if (expensesbool != null)
+                    return Ok(expensesbool);
+                else
+                    return NotFound();
             }
             return BadRequest("data is not valid");
         }
@@ -61,8 +64,11 @@ namespace FinalProjectBkEndApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                var purchasesbool = _Eservices.Put(id,expensesModel);
-                return Ok(purchasesbool);
+                var expensesbool = _Eservices.Put(id,expensesModel);
+                if (expensesbool != null)
+                    return Ok(expensesbool);
+                else
+                    return NotFound();
             }
             return BadRequest("data is not valid");
         }
