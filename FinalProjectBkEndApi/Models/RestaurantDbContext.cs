@@ -40,7 +40,10 @@ namespace FinalProjectBkEndApi.Models
             modelBuilder.Entity<OrderDetails>()
                 .HasKey(orderD => new { orderD.product_id, orderD.order_id });
             #endregion
-
+            #region
+            modelBuilder.Entity<Expenses>()
+           .Property(ex => ex.date).HasDefaultValueSql("getdate()");
+            #endregion
             #region Expense Details Config
             modelBuilder.Entity<ExpensesDetails>()
                 .HasKey(e => new { e.item_id, e.expenses_id });
