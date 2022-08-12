@@ -14,7 +14,7 @@ namespace FinalProjectBkEndApi.Models
         [Column(TypeName ="money")]
         [Range(minimum:0,maximum:int.MaxValue)]
         public int price { get; set; }
-        [StringLength(50)]
+        [StringLength(50), MaxLength(150)]
         public string description { get; set; }
 	    public string imagePath { get; set; }
         #endregion

@@ -79,12 +79,12 @@ namespace FinalProjectBkEndApi.Controllers
             return BadRequest("data is not valid");
         }
 
-        [HttpPut]
-        public IActionResult PutOrder(OrderModel orderModel)
+        [HttpPut("{id:int}")]
+        public IActionResult PutOrder(int id,OrderModel orderModel)
         {
             if (ModelState.IsValid)
             {
-                var orderbool = _Oservices.PostOrder(orderModel);
+                var orderbool = _Oservices.PutOrder(id,orderModel);
                 return Ok(orderbool);
             }
             return BadRequest("data is not valid");
@@ -131,6 +131,19 @@ namespace FinalProjectBkEndApi.Controllers
             if (order!=null)
             {
                 return Ok(order);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        [HttpDelete("{id:int}")]
+        public IActionResult Delete(int id)
+        {
+            var deleteBool = _Oservices.DeleteOrder(id);
+            if (deleteBool)
+            {
+                return Ok();
             }
             else
             {

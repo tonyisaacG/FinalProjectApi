@@ -20,7 +20,7 @@ namespace FinalProjectBkEndApi.Models
         [Range(minimum: 1, maximum: int.MaxValue)]
         [Required]
         public int expectedQuantityInDay { get; set; } = 1;     //Amount expected to be used during the day    
-        [StringLength(50)]
+        [StringLength(50), MaxLength(150)]
         public string description { get; set; }
         #endregion
 

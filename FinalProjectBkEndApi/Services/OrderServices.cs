@@ -108,39 +108,46 @@ namespace FinalProjectBkEndApi.Services
             }
         }
 
-        public bool PostOrder(OrderModel order)
+        public Order PostOrder(OrderModel order)
         {
-            if(order != null)
+            try
             {
-                var newOrder = order.OrderModelDTOrder();
-                newOrder.User = _DbContext.Users.FirstOrDefault(user => user.username == order.username);
-                _DbContext.Orders.Add(newOrder);
-                _DbContext.SaveChanges();
-                // save deatils for order or exists
-                if (order.orderDetailsModels.Count > 0)
+                if (order != null)
                 {
-                    List<OrderDetails> orderDetails = new List<OrderDetails>();
-                    foreach(var details in order.orderDetailsModels)
-                    {
-                        orderDetails.Add(new OrderDetails()
-                        {
-                            order_id = newOrder.id,
-                            product_id = details.product_id,
-                            quantityMeal = details.quantityMeal,
-                            priceMeal = details.priceMeal
-                        });
-                    }
-                    _DbContext.OrderDetails.AddRange(orderDetails);
+                    var newOrder = order.OrderModelDTOrder();
+                    newOrder.User = _DbContext.Users.FirstOrDefault(user => user.username == order.username);
+                    _DbContext.Orders.Add(newOrder);
                     _DbContext.SaveChanges();
+                    // save deatils for order or exists
+                    if (order.orderDetailsModels.Count > 0)
+                    {
+                        List<OrderDetails> orderDetails = new List<OrderDetails>();
+                        foreach (var details in order.orderDetailsModels)
+                        {
+                            orderDetails.Add(new OrderDetails()
+                            {
+                                order_id = newOrder.id,
+                                product_id = details.product_id,
+                                quantityMeal = details.quantityMeal,
+                                priceMeal = details.priceMeal
+                            });
+                        }
+                        _DbContext.OrderDetails.AddRange(orderDetails);
+                        _DbContext.SaveChanges();
+                    }
+                    return newOrder ;
                 }
-                return true;
+                return null;
             }
-            return false;
+            catch
+            {
+                return null;
+            }
         }
 
     
 
-        public bool PutOrder(int id, OrderModel order)
+        public Order PutOrder(int id, OrderModel order)
         {
             var oldOrder = _DbContext.Orders.Include(o => o.OrderDetails).FirstOrDefault(od => od.id == id);
             if (oldOrder != null)
@@ -172,9 +179,9 @@ namespace FinalProjectBkEndApi.Services
                 //        _DbContext.OrderDetails.UpdateRange(detailsEdit);
                 //        _DbContext.SaveChanges();
                 //    }
-                return true;
+                return oldOrder;
             }
-            return false;
+            return oldOrder;
         }
         public OrderModel ChangeStatusOrder(int idOrder, StatusOrder typeOrder)
         {
@@ -218,7 +225,7 @@ namespace FinalProjectBkEndApi.Services
                     newobject.desription = orderDetails.desription;
                     newobject.Order = order;
                     newobject.Products = product;
-                    _DbContext.Entry(newobject).State = EntityState.Deleted;
+                    _DbContext.Entry(newobject).State = EntityState.Added;
                     _DbContext.SaveChanges();
                     return true;
                 }
@@ -243,6 +250,18 @@ namespace FinalProjectBkEndApi.Services
                 orderDeatails.quantityMeal = orderDetailsModel.quantityMeal;
                 orderDeatails.desription = orderDetailsModel.desription;
                 _DbContext.Entry(orderDeatails).State = EntityState.Modified;
+                _DbContext.SaveChanges();
+                return true;
+            }
+            else { return false; }
+        }
+
+        public bool DeleteOrder(int id)
+        {
+            var order = _DbContext.Orders.Where(o=> o.id == id).FirstOrDefault();
+            if (order != null)
+            {
+                _DbContext.Entry(order).State = EntityState.Deleted;
                 _DbContext.SaveChanges();
                 return true;
             }

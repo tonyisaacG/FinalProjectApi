@@ -28,12 +28,13 @@ namespace FinalProjectBkEndApi.Models
         public DateTime date { get; set; } // order default date from system
         [Column(TypeName ="money")]
         public int? totalPrice { get; set; }
-        [StringLength(50)]
+        [StringLength(50), MaxLength(150)]
+
         public string  notes { get; set; }
         public string nameClient { get; set; }
         [RegularExpression(@"(010|011|015|012)[0-9]{8}")]
         public string phoneClient { get; set; }
-        [StringLength(50)]
+        [StringLength(50),MaxLength(150)]
         public string AddressClient { get; set; }
         [Required]
         public string orderType { get; set; } //(delivery / in restaurant)

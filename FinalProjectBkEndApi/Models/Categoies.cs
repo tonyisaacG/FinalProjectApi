@@ -13,6 +13,7 @@ namespace FinalProjectBkEndApi.Models
         [Required]
         public string name { get; set; }
         public string imagePath { get; set; }
+        [StringLength(50), MaxLength(150)]
         public string description { get; set; }
         #endregion
 

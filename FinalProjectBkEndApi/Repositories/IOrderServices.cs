@@ -8,8 +8,8 @@ namespace FinalProjectBkEndApi.Repositories
     {
         List<OrderModel> GetAll();
         OrderModel GetOrderDetails(int id);
-        bool PutOrder(int id,OrderModel order);
-        bool PostOrder(OrderModel order);
+        Order PutOrder(int id,OrderModel order);
+        Order PostOrder(OrderModel order);
         List<Order> GetInDay();
         List<Order> GetInDayStatus(StatusOrder statusOrder);
         List<Order> GetByRangeDate(string fromDate,string toDate);
@@ -17,6 +17,7 @@ namespace FinalProjectBkEndApi.Repositories
         bool AddOrderDetails(int idOrder, OrderDetailsModel orderDetails);
         OrderModel ChangeStatusOrder(int idOrder, StatusOrder typeOrder);
         bool DeleteOrderDetails(int idOrder, int idProduct);
+        bool DeleteOrder(int id);
 
 
 
