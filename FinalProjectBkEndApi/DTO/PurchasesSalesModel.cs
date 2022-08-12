@@ -12,7 +12,7 @@ namespace FinalProjectBkEndApi.DTO
         public DateTime bill_date { get; set; }
         [Required]
         public int totalPrice { get; set; }
-        [StringLength(20)]
+        [StringLength(100)]
         public string vendorName { get; set; }
         public string type { get; set; }
 

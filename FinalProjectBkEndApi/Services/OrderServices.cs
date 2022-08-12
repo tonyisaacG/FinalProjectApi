@@ -108,8 +108,9 @@ namespace FinalProjectBkEndApi.Services
             }
         }
 
-        public Order PostOrder(OrderModel order)
+        public OrderModel PostOrder(OrderModel order)
         {
+            var transition = _DbContext.Database.BeginTransaction();
             try
             {
                 if (order != null)
@@ -135,21 +136,24 @@ namespace FinalProjectBkEndApi.Services
                         _DbContext.OrderDetails.AddRange(orderDetails);
                         _DbContext.SaveChanges();
                     }
-                    return newOrder ;
+                    transition.Commit();
+                    var newOrderDP = _DbContext.Orders.Include(o => o.OrderDetails).ThenInclude(p => p.Products).FirstOrDefault(od => od.id == newOrder.id);
+                    return newOrderDP.OrderDTOrderModel();
                 }
                 return null;
             }
             catch
             {
+                transition.Rollback();
                 return null;
             }
         }
 
     
 
-        public Order PutOrder(int id, OrderModel order)
+        public OrderModel PutOrder(int id, OrderModel order)
         {
-            var oldOrder = _DbContext.Orders.Include(o => o.OrderDetails).FirstOrDefault(od => od.id == id);
+            var oldOrder = _DbContext.Orders.Include(o => o.OrderDetails).ThenInclude(p=>p.Products).FirstOrDefault(od => od.id == id);
             if (oldOrder != null)
             {
                 oldOrder.date = order.order_date;
@@ -179,9 +183,9 @@ namespace FinalProjectBkEndApi.Services
                 //        _DbContext.OrderDetails.UpdateRange(detailsEdit);
                 //        _DbContext.SaveChanges();
                 //    }
-                return oldOrder;
+                return oldOrder.OrderDTOrderModel();
             }
-            return oldOrder;
+            return null;
         }
         public OrderModel ChangeStatusOrder(int idOrder, StatusOrder typeOrder)
         {

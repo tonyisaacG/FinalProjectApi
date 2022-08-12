@@ -74,7 +74,10 @@ namespace FinalProjectBkEndApi.Controllers
             if (ModelState.IsValid)
             {
                 var orderbool = _Oservices.PostOrder(orderModel);
-                return Ok(orderbool);
+               if(orderbool!=null)
+                    return Ok(orderbool);
+               else
+                    return BadRequest();    
             }
             return BadRequest("data is not valid");
         }
@@ -85,7 +88,10 @@ namespace FinalProjectBkEndApi.Controllers
             if (ModelState.IsValid)
             {
                 var orderbool = _Oservices.PutOrder(id,orderModel);
-                return Ok(orderbool);
+                if (orderbool != null)
+                    return Ok(orderbool);
+                else
+                    return BadRequest();
             }
             return BadRequest("data is not valid");
         }
@@ -97,7 +103,10 @@ namespace FinalProjectBkEndApi.Controllers
             if (ModelState.IsValid)
             {
                 var orderbool = _Oservices.AddOrderDetails(id,orderModel);
-                return Ok("Ok");
+                if (orderbool)
+                    return Ok("Ok");
+                else
+                    BadRequest();
             }
             return BadRequest("data is not valid");
         }
@@ -107,7 +116,10 @@ namespace FinalProjectBkEndApi.Controllers
             if (ModelState.IsValid)
             {
                 var orderbool = _Oservices.EditOrderDetails(idorder,idproduct, orderModel);
-                return Ok("updated");
+                if (orderbool)
+                    return Ok("updated");
+                else
+                    BadRequest();
             }
             return BadRequest("data is not valid");
         }
@@ -117,7 +129,10 @@ namespace FinalProjectBkEndApi.Controllers
             try
             {
                 var orderbool = _Oservices.DeleteOrderDetails(idorder, idproduct);
-                return Ok("Deleted");
+                if (orderbool)
+                    return Ok("Deleted");
+                else
+                    return BadRequest();
             }
             catch
             {

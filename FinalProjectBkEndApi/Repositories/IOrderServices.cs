@@ -8,8 +8,8 @@ namespace FinalProjectBkEndApi.Repositories
     {
         List<OrderModel> GetAll();
         OrderModel GetOrderDetails(int id);
-        Order PutOrder(int id,OrderModel order);
-        Order PostOrder(OrderModel order);
+        OrderModel PutOrder(int id,OrderModel order);
+        OrderModel PostOrder(OrderModel order);
         List<Order> GetInDay();
         List<Order> GetInDayStatus(StatusOrder statusOrder);
         List<Order> GetByRangeDate(string fromDate,string toDate);

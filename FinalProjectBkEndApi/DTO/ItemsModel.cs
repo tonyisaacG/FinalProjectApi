@@ -11,7 +11,8 @@ namespace FinalProjectBkEndApi.DTO
         [Range(minimum: 1, maximum: int.MaxValue)]
         [Required]
         public int expectedQuantityInDay { get; set; }       //Amount expected to be used during the day    
-        [StringLength(50)]
+        [StringLength(150), MaxLength(150)]
+
         public string description { get; set; }
     }
 }

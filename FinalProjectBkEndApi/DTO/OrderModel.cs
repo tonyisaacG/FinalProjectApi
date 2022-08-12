@@ -13,7 +13,8 @@ namespace FinalProjectBkEndApi.DTO
         [Required]
         [Range(minimum:0,maximum:int.MaxValue)]
         public int? totalPrice { get; set; }
-        [MinLength(20)]
+        [StringLength(150), MaxLength(150)]
+
         public string notes { get; set; }
         [Required]
         public string orderType { get; set; } //(delivery / in restaurant)
@@ -24,7 +25,7 @@ namespace FinalProjectBkEndApi.DTO
         [RegularExpression(@"(010|011|015|012)[0-9]{8}")]
         public string phoneClient { get; set; }
         [Required]
-        [StringLength(50)]
+        [StringLength(150)]
         public string addressClient { get; set; }
         public string username { get; set; }
         public List<OrderDetailsModel> orderDetailsModels { get; set; } = new List<OrderDetailsModel>();

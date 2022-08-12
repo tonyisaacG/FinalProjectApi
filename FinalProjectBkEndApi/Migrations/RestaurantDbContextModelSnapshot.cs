@@ -27,7 +27,8 @@ namespace FinalProjectBkEndApi.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("imagePath")
                         .HasColumnType("nvarchar(max)");
@@ -85,8 +86,8 @@ namespace FinalProjectBkEndApi.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("description")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<int>("expectedQuantityInDay")
                         .HasColumnType("int");
@@ -128,8 +129,8 @@ namespace FinalProjectBkEndApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("notes")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("orderStatus")
                         .IsRequired()
@@ -164,8 +165,8 @@ namespace FinalProjectBkEndApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("desription")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<decimal>("priceMeal")
                         .HasColumnType("money");
@@ -191,8 +192,8 @@ namespace FinalProjectBkEndApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("description")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("imagePath")
                         .HasColumnType("nvarchar(max)");
@@ -230,8 +231,8 @@ namespace FinalProjectBkEndApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("vendorName")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("id");
 

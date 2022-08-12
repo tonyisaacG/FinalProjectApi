@@ -52,7 +52,7 @@ namespace FinalProjectBkEndApi.Models
             #endregion
 
             #region user Config 
-            modelBuilder.Entity<User>().HasIndex(u => u.phone).IsUnique();
+           // modelBuilder.Entity<User>().HasIndex(u => u.phone).IsUnique();
             modelBuilder.Entity<User>().HasIndex(u =>new { u.password,u.username }).IsUnique();
             #endregion
 

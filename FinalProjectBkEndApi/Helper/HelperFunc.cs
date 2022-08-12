@@ -15,7 +15,7 @@ namespace FinalProjectBkEndApi.Helper
             {
                 name = registerModel.name,
                 username = registerModel.username,
-                phone = registerModel.phone,
+                //phone = registerModel.phone,
                 password = EncodePasswordToBase64(registerModel.password),
             };
         }
@@ -159,7 +159,7 @@ namespace FinalProjectBkEndApi.Helper
                 user_id = user.id,
                 user_name = user.name,
                 username = user.username,
-                phone = user.phone,
+                //phone = user.phone,
                 password = user.password,
                 permission_id = user.Role?.id??0,
                 permission = user.Role?.permission
@@ -171,7 +171,7 @@ namespace FinalProjectBkEndApi.Helper
             {
                 name = user.user_name,
                 username = user.username,
-                phone = user.phone,
+                //phone = user.phone,
                 password = EncodePasswordToBase64(user.password),
             };
         }

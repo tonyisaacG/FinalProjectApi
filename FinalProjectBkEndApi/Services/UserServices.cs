@@ -47,8 +47,10 @@ namespace FinalProjectBkEndApi.Services
             {
                 try
                 {
-                    var existuser = _DbContext.Users.FirstOrDefault(u=>u.phone==entity.phone&&u.username== entity.username
-                    &&u.password==HelperFunc.EncodePasswordToBase64(entity.password));
+                    //var existuser = _DbContext.Users.FirstOrDefault(u=>u.phone==entity.phone&&u.username== entity.username
+                    //&&u.password==HelperFunc.EncodePasswordToBase64(entity.password));
+                    var existuser = _DbContext.Users.FirstOrDefault(u=>u.username == entity.username
+                    && u.password == HelperFunc.EncodePasswordToBase64(entity.password));
                     if (existuser != null)
                         return (IParentModel)existuser;
                     var newUser = entity.UserModelDTOUser();
@@ -76,7 +78,7 @@ namespace FinalProjectBkEndApi.Services
                 user.name = model.user_name;
                 user.username = model.username;
                 user.password = model.password;
-                user.phone = model.phone;
+                //user.phone = model.phone;
                 user.Role = _DbContext.Roles.FirstOrDefault(r => r.permission == model.permission.ToString());
                 _DbContext.Entry(user).State = EntityState.Modified;
                 _DbContext.SaveChanges();

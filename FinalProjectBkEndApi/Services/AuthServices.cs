@@ -41,11 +41,13 @@ namespace FinalProjectBkEndApi.Services
         public bool Register([FromBody] RegisterModel userModel)
         {
             var hashPassword = HelperFunc.EncodePasswordToBase64(userModel.password);
-
             var user = _DbContext.Users.Where(
-                userM => userM.username == userModel.username &&
-                userM.password == hashPassword &&
-                userM.phone == userModel.phone).FirstOrDefault();
+              userM => userM.username == userModel.username &&
+              userM.password == hashPassword).FirstOrDefault();
+            //var user = _DbContext.Users.Where(
+            //    userM => userM.username == userModel.username &&
+            //    userM.password == hashPassword &&
+            //    userM.phone == userModel.phone).FirstOrDefault();
             if (user != null)
             {
                 return false;

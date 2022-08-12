@@ -11,7 +11,8 @@ namespace FinalProjectBkEndApi.DTO
         public string product_name { get; set; }
         [Range(minimum: 0, maximum: int.MaxValue)]
         public int product_price { get; set; }
-        [StringLength(50)]
+        [StringLength(150), MaxLength(150)]
+
         public string product_description { get; set; }
         public IFormFile product_imagePathSrc { get; set; }
         public string product_imagePath { get; set; }
