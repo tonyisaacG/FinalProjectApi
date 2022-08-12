@@ -50,7 +50,7 @@ namespace FinalProjectBkEndApi.Services
                 var item = entity.ItemsModelDTOItems();
                 _DbContext.Entry(item).State = EntityState.Added;
                 _DbContext.SaveChanges();
-                return (IParentModel)entity;
+                return (IParentModel)item;
             }
             else
             {

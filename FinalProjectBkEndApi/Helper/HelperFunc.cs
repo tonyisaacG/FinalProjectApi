@@ -34,7 +34,7 @@ namespace FinalProjectBkEndApi.Helper
                 notes = order.notes
             
             };
-            if (order.OrderDetails != null)
+            if (order.OrderDetails != null||order.OrderDetails.Count>0)
             {
                 foreach (var details in order.OrderDetails)
                 {
@@ -186,15 +186,19 @@ namespace FinalProjectBkEndApi.Helper
                 bill_date = expenses.date,
                 type = expenses.type,
             };
-            foreach (var details in expenses.ExpensesDetails)
+            if (expenses.ExpensesDetails != null || expenses.ExpensesDetails.Count > 0)
             {
-                expensesModel.ExpensesDetailsModels.Add(new ExpensesDetailsModel()
+                foreach (var details in expenses.ExpensesDetails)
                 {
-                    item_id = details.Items.id,
-                    item_name = details.Items.name,
-                    quantity = details.quantity
-                });
+                    expensesModel.ExpensesDetailsModels.Add(new ExpensesDetailsModel()
+                    {
+                        item_id = details.Items.id,
+                        item_name = details.Items.name,
+                        quantity = details.quantity
+                    });
+                }
             }
+            else { expensesModel.ExpensesDetailsModels = null; }
             return expensesModel;
         }
         public static Expenses ExpensesModelDTExpenses(this ExpensesModel expenses)

@@ -109,7 +109,12 @@ namespace FinalProjectBkEndApi.Services
                 var expensesLst = _DbContext.Expenses.Where(ex => ex.type == type.ToString()).ToList();
                 if (expensesLst != null)
                 {
-                    return (IParentModel)expensesLst;
+                    List<ExpensesModel> expensesModels = new List<ExpensesModel>();
+                    foreach (var expenses in expensesLst)
+                    {
+                        expensesModels.Add(expenses.ExpensesDTOExpensesModel());
+                    }
+                    return (IParentModel)expensesModels;
                 }
                 return null;
             }
@@ -131,10 +136,15 @@ namespace FinalProjectBkEndApi.Services
         {
             try
             {
-                var expensesLst = _DbContext.Expenses.ToList();
+                var expensesLst = _DbContext.Expenses.Include(ed => ed.ExpensesDetails).ThenInclude(t => t.Items).ToList();
                 if (expensesLst != null)
                 {
-                    return (IEnumerable<IParentModel>)expensesLst;
+                    List<ExpensesModel> expensesModels = new List<ExpensesModel>();
+                    foreach(var expenses in expensesLst)
+                    {
+                       expensesModels.Add( expenses.ExpensesDTOExpensesModel());
+                    }
+                    return expensesModels;
                 }
                 return null;
             }
@@ -169,15 +179,13 @@ namespace FinalProjectBkEndApi.Services
 
                         _DbContext.ExpensesDetails.AddRange(expensesDetails);
                         _DbContext.SaveChanges();
-                        trasnsition.Commit();
-                        // add quantity for items
+                       
+                    }
+                    trasnsition.Commit();
+                    // add quantity for items
+                    var expensesM = _DbContext.Expenses.Include(ed => ed.ExpensesDetails).ThenInclude(t => t.Items).FirstOrDefault(ex => ex.id == newBill.id);
+                    return (IParentModel)expensesM.ExpensesDTOExpensesModel();
 
-                    }
-                    else
-                    {
-                        trasnsition.Rollback();
-                    }
-                    return (IParentModel)newBill;
                 }
                 catch {
                     trasnsition.Rollback();
@@ -189,14 +197,14 @@ namespace FinalProjectBkEndApi.Services
 
         public IParentModel Put(int id, ExpensesModel model)
         {
-            var oldExpenses = _DbContext.Expenses.Include(p => p.ExpensesDetails).FirstOrDefault(p => p.id == id);
+            var oldExpenses = _DbContext.Expenses.Include(p => p.ExpensesDetails).ThenInclude(i=>i.Items).FirstOrDefault(p => p.id == id);
             if (oldExpenses != null)
             {
                 oldExpenses.date = model.bill_date;
                 oldExpenses.type = model.type;
                 _DbContext.Entry(oldExpenses).State = EntityState.Modified;
                 _DbContext.SaveChanges();
-                return oldExpenses;
+                return oldExpenses.ExpensesDTOExpensesModel();
             }
             return null;
 
