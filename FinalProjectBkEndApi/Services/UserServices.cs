@@ -52,12 +52,12 @@ namespace FinalProjectBkEndApi.Services
                     var existuser = _DbContext.Users.FirstOrDefault(u=>u.username == entity.username
                     && u.password == HelperFunc.EncodePasswordToBase64(entity.password));
                     if (existuser != null)
-                        return (IParentModel)existuser;
+                        return (IParentModel)existuser.UsersDTOUserModel();
                     var newUser = entity.UserModelDTOUser();
                     newUser.Role = _DbContext.Roles.Where(role => role.permission == entity.permission.ToString()).FirstOrDefault();
                     _DbContext.Users.Add(newUser);
                     _DbContext.SaveChanges();
-                    return entity;
+                    return entity.UserModelDTOUser();
                 }
                 catch
                 {
@@ -82,7 +82,7 @@ namespace FinalProjectBkEndApi.Services
                 user.Role = _DbContext.Roles.FirstOrDefault(r => r.permission == model.permission.ToString());
                 _DbContext.Entry(user).State = EntityState.Modified;
                 _DbContext.SaveChanges();
-                return user;
+                return user.UsersDTOUserModel();
             }
             else
             {
