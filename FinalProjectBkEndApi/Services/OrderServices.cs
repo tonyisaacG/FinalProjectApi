@@ -271,5 +271,42 @@ namespace FinalProjectBkEndApi.Services
             }
             else { return false; }
         }
+
+        public List<OrderModel> GetOnlineInDayOrder()
+        {
+            var onlineOrders = _DbContext.Orders.Where(o=>o.orderType == TypeOrder.Online.ToString() && o.date == DateTime.Now.Date).Include(od => od.OrderDetails).ThenInclude(p => p.Products).ToList();
+            if (onlineOrders != null)
+            {
+                List<OrderModel> orderModels = new List<OrderModel>();
+                foreach (var order in onlineOrders)
+                {
+                    orderModels.Add(order.OrderDTOrderModel());
+                }
+                return orderModels;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        
+        public List<OrderModel> GetInDayOrderType(TypeOrder type)
+        {
+            var onlineOrders = _DbContext.Orders.Where(o => o.orderType == type.ToString() && o.date == DateTime.Now.Date).Include(od => od.OrderDetails).ThenInclude(p => p.Products).ToList();
+            if (onlineOrders != null)
+            {
+                List<OrderModel> orderModels = new List<OrderModel>();
+                foreach (var order in onlineOrders)
+                {
+                    orderModels.Add(order.OrderDTOrderModel());
+                }
+                return orderModels;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace FinalProjectBkEndApi.Models
     {
         Delivery,
         Restaurant,
+        Online
     }
     public class Order:IParentModel
     {

@@ -18,7 +18,8 @@ namespace FinalProjectBkEndApi.Repositories
         OrderModel ChangeStatusOrder(int idOrder, StatusOrder typeOrder);
         bool DeleteOrderDetails(int idOrder, int idProduct);
         bool DeleteOrder(int id);
-
+        List<OrderModel> GetOnlineInDayOrder();
+        List<OrderModel> GetInDayOrderType(TypeOrder type);
 
 
 

@@ -33,6 +33,11 @@ namespace FinalProjectBkEndApi
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddSignalR(options =>
+            {
+                options.EnableDetailedErrors = true;
+            });
+
 
             #region default configuration
             services.AddControllers().AddNewtonsoftJson(json=>json.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -143,6 +148,7 @@ namespace FinalProjectBkEndApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<HubController.HubOrder>("/hubOrder");
             });
             #endregion
 

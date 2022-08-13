@@ -20,7 +20,35 @@ namespace FinalProjectBkEndApi.Controllers
             _Oservices = Oservices;
         }
 
-        
+
+        [HttpGet("online")]
+        public IActionResult GetAllOnline()
+        {
+            var orderOnlines = _Oservices.GetOnlineInDayOrder();
+            if (orderOnlines!= null){
+                return Ok(orderOnlines);
+            }
+            else
+            {
+                return NoContent();
+            }
+        }
+        [HttpGet("orderType")]
+        public IActionResult GetAllOrderType(TypeOrder type)
+        {
+            var orderOnlines = _Oservices.GetInDayOrderType(type);
+            if (orderOnlines != null)
+            {
+                return Ok(orderOnlines);
+            }
+            else
+            {
+                return NoContent();
+            }
+        }
+
+
+
         [HttpGet]
         public IActionResult GetAll()
         {
