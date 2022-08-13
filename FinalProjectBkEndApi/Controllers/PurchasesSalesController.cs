@@ -122,6 +122,19 @@ namespace FinalProjectBkEndApi.Controllers
                 return NotFound("this order not found");
             }
         }
+        [HttpDelete("{id:int}")]
+        public IActionResult Delete(int id)
+        {
+            var dbool = _PSservices.Delete(id);
+            if (dbool)
+            {
+                return Ok("deleted");
+            }
+            else
+            {
+                return NotFound("not  exist this item");
+            }
+        }
     }
 }
 

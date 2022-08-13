@@ -28,7 +28,7 @@ namespace FinalProjectBkEndApi.Services
                 {
                     var newobject = new PurchasesConsumptionDetails();
                     newobject.quantity = purchasesSalesDetailsModel.quantity;
-                    newobject.price = purchasesSalesDetailsModel.quantity * item.priceKilo;
+                    newobject.price = purchasesSalesDetailsModel.price;
                     newobject.PurchasesConsumption = purchases;
                     newobject.Items = item;
                     _DbContext.Entry(newobject).State = EntityState.Added;
@@ -38,7 +38,7 @@ namespace FinalProjectBkEndApi.Services
                 else
                 {
                     oldPurchasesDetails.quantity += purchasesSalesDetailsModel.quantity;
-                    oldPurchasesDetails.price = purchasesSalesDetailsModel.quantity * item.priceKilo;
+                    oldPurchasesDetails.price += purchasesSalesDetailsModel.price;
                     _DbContext.Entry(oldPurchasesDetails).State = EntityState.Modified;
                     _DbContext.SaveChanges();
                     return oldPurchasesDetails;
@@ -65,7 +65,14 @@ namespace FinalProjectBkEndApi.Services
 
         public bool Delete(int id)
         {
-            throw new System.NotImplementedException();
+            var purchases = _DbContext.PurchasesConsumptions.FirstOrDefault(p => p.id == id);
+            if (purchases != null)
+            {
+                _DbContext.PurchasesConsumptions.Remove(purchases);
+                _DbContext.SaveChanges();
+                return true;
+            }
+            else { return false; }
         }
 
         public bool DeleteBillDetails(int idBill, int idItem)
@@ -95,12 +102,17 @@ namespace FinalProjectBkEndApi.Services
             else { return false; }
         }
 
-        public IParentModel Get(BillType type)
+        public IEnumerable<IParentModel> Get(BillType type)
         {
-            var purchasesLst = _DbContext.PurchasesConsumptions.Where(purch => purch.type == type.ToString()).ToList();
-            if(purchasesLst!=null)
+            var purchasesLst = _DbContext.PurchasesConsumptions.Where(purch => purch.type == type.ToString()).Include(pd => pd.PurchasesDetails).ThenInclude(t => t.Items).ToList();
+            if (purchasesLst != null)
             {
-                return (IParentModel)purchasesLst;
+                List<PurchasesSalesModel> purchasesSalesModels = new List<PurchasesSalesModel>();
+                foreach (var purchase in purchasesLst)
+                {
+                    purchasesSalesModels.Add(purchase.PurchasesDTOpurchasesModel());
+                }
+                return purchasesSalesModels;
             }
             return null;
         }
@@ -120,10 +132,15 @@ namespace FinalProjectBkEndApi.Services
         {
             try
             {
-                var purchasesLst = _DbContext.PurchasesConsumptions.ToList();
+                var purchasesLst = _DbContext.PurchasesConsumptions.Include(pd => pd.PurchasesDetails).ThenInclude(t => t.Items).ToList();
                 if (purchasesLst != null)
                 {
-                    return purchasesLst;
+                    List<PurchasesSalesModel> purchasesSalesModels = new List<PurchasesSalesModel>();
+                    foreach(var purchase in purchasesLst)
+                    {
+                        purchasesSalesModels.Add(purchase.PurchasesDTOpurchasesModel());
+                    }
+                    return purchasesSalesModels;
                 }
                 return null;
             }
@@ -156,15 +173,18 @@ namespace FinalProjectBkEndApi.Services
                     _DbContext.SaveChanges();
                     // add quantity for items
 
+
                 }
-                return newBill;
+                var bill = _DbContext.PurchasesConsumptions.Include(p=>p.PurchasesDetails).ThenInclude(t => t.Items).FirstOrDefault(pu => pu.id == newBill.id);
+
+                return bill.PurchasesDTOpurchasesModel();
             }
             return null;
         }
 
         public IParentModel Put(int id, PurchasesSalesModel model)
         {
-            var oldPurchases = _DbContext.PurchasesConsumptions.Include(p=>p.PurchasesDetails).FirstOrDefault(p => p.id == id);
+            var oldPurchases = _DbContext.PurchasesConsumptions.Include(p=>p.PurchasesDetails).ThenInclude(i=>i.Items).FirstOrDefault(p => p.id == id);
             if (oldPurchases != null)
             {
                 oldPurchases.date = model.bill_date;
@@ -173,7 +193,7 @@ namespace FinalProjectBkEndApi.Services
                 oldPurchases.type = model.type;
                 _DbContext.Entry(oldPurchases).State = EntityState.Modified;
                 _DbContext.SaveChanges();
-                return oldPurchases;
+                return oldPurchases.PurchasesDTOpurchasesModel();
             }
             return null;
         }

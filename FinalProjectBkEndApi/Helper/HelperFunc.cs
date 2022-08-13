@@ -34,7 +34,7 @@ namespace FinalProjectBkEndApi.Helper
                 notes = order.notes
             
             };
-            if (order.OrderDetails != null||order.OrderDetails.Count>0)
+            if (order.OrderDetails != null)
             {
                 foreach (var details in order.OrderDetails)
                 {
@@ -76,16 +76,20 @@ namespace FinalProjectBkEndApi.Helper
                 vendorName = purchases.vendorName,
                 type =purchases.type,
             };
-            foreach (var details in purchases.PurchasesDetails)
+            if (purchases.PurchasesDetails != null || purchases.PurchasesDetails.Count > 0)
             {
-                purchasesMolde.PurchasesSalesDetailsModels.Add(new PurchasesSalesDetailsModel()
+                foreach (var details in purchases.PurchasesDetails)
                 {
-                   item_id = details.Items.id,
-                   item_name = details.Items.name,
-                   price = details.price,
-                   quantity = details.quantity
-                });
+                    purchasesMolde.PurchasesSalesDetailsModels.Add(new PurchasesSalesDetailsModel()
+                    {
+                        item_id = details.Items.id,
+                        item_name = details.Items.name,
+                        price = details.price,
+                        quantity = details.quantity
+                    });
+                }
             }
+            else { purchasesMolde.PurchasesSalesDetailsModels = null; }
             return purchasesMolde;
         }
         public static PurchasesConsumption PurchasesModelDTPurchases(this PurchasesSalesModel purchases)

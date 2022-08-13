@@ -18,31 +18,38 @@ namespace FinalProjectBkEndApi.Services
 
         public IParentModel AddBillDetails(int idBill, ExpensesDetailsModel ExpensesDetailsModel)
         {
-            var expenses = _DbContext.Expenses.Where(e => e.id == idBill).FirstOrDefault();
-            var item = _DbContext.Items.Where(i => i.id == ExpensesDetailsModel.item_id).FirstOrDefault();
-            if (expenses != null && item != null)
+            try
             {
-                var oldDetails = _DbContext.ExpensesDetails.Where(op => op.item_id == ExpensesDetailsModel.item_id &&
-                op.expenses_id == idBill).FirstOrDefault();
-                if (oldDetails == null)
+                var expenses = _DbContext.Expenses.Where(e => e.id == idBill).FirstOrDefault();
+                var item = _DbContext.Items.Where(i => i.id == ExpensesDetailsModel.item_id).FirstOrDefault();
+                if (expenses != null && item != null)
                 {
-                    var newobject = new ExpensesDetails();
-                    newobject.quantity = ExpensesDetailsModel.quantity;
-                    newobject.Expenses = expenses;
-                    newobject.Items = item;
-                    _DbContext.Entry(newobject).State = EntityState.Added;
-                    _DbContext.SaveChanges();
-                    return newobject;
+                    var oldDetails = _DbContext.ExpensesDetails.Where(op => op.item_id == ExpensesDetailsModel.item_id &&
+                    op.expenses_id == idBill).FirstOrDefault();
+                    if (oldDetails == null)
+                    {
+                        var newobject = new ExpensesDetails();
+                        newobject.quantity = ExpensesDetailsModel.quantity;
+                        newobject.Expenses = expenses;
+                        newobject.Items = item;
+                        _DbContext.Entry(newobject).State = EntityState.Added;
+                        _DbContext.SaveChanges();
+                        return newobject;
+                    }
+                    else
+                    {
+                        oldDetails.quantity += ExpensesDetailsModel.quantity;
+                        _DbContext.Entry(oldDetails).State = EntityState.Modified;
+                        _DbContext.SaveChanges();
+                        return oldDetails;
+                    }
                 }
-                else
-                {
-                    oldDetails.quantity += ExpensesDetailsModel.quantity;
-                    _DbContext.Entry(oldDetails).State = EntityState.Modified;
-                    _DbContext.SaveChanges();
-                    return oldDetails;
-                }
+                else { return null; }
             }
-            else { return null; }
+            catch
+            {
+                return null;
+            }
         }
 
         public bool ChangeTypeBill(int idBill, BillType billType)
@@ -127,7 +134,7 @@ namespace FinalProjectBkEndApi.Services
 
             if (expenses != null)
             {
-                return (IParentModel)expenses.ExpensesDTOExpensesModel();
+                return expenses.ExpensesDTOExpensesModel();
             }
             return null;
         }

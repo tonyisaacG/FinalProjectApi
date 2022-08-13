@@ -2,7 +2,7 @@
 
 namespace FinalProjectBkEndApi.DTO
 {
-    public class ExpensesDetailsModel:IParentModel
+    public class ExpensesDetailsModel
     {
         public int item_id { get; set; }
         public string item_name { get; set; }
