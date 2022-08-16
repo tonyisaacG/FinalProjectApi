@@ -34,6 +34,14 @@ namespace FinalProjectBkEndApi.Controllers
                 return NotFound("not exist any item");
             return Ok(pro);
         }
+        [HttpGet("productCatId/{id:int}")]
+        public IActionResult GetProductCatId(int id)
+        {
+            var pro = _Pservices.GetProductCatId(id);
+            if (pro == null)
+                return NotFound("not exist any item");
+            return Ok(pro);
+        }
         [HttpGet("{id:int}")]
         public IActionResult GetOne(int id)
         {

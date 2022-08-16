@@ -27,25 +27,42 @@ namespace FinalProjectBkEndApi.Controllers
             try
             {
                 var files = HttpContext.Request.Form.Files;
+                var path = "";
                 if (files != null && files.Count > 0)
                 {
                     foreach (var file in files)
                     {
+
                         FileInfo f1 = new FileInfo(file.FileName);
-                        var newfilename = "Image1" + f1.Extension;
-                        var path = Path.Combine("", _IwebHostEnvironment.ContentRootPath + "\\Resources\\" + newfilename);
+                        var newfilename = Guid.NewGuid().ToString() + "_" + f1.Extension;
+                        path = Path.Combine("", _IwebHostEnvironment.ContentRootPath + "\\Resources\\Products\\" + newfilename);
                         using (var stream = new FileStream(path, FileMode.Create))
                         {
                             file.CopyTo(stream);
                         };
                     }
+                    return Ok(path);
                 }
-                return Ok("ok");
-
+                return NotFound();   
             }
             catch { return NotFound(); }
 
 
         }
+        [HttpDelete]
+        public IActionResult Delete(string imagePath)
+        {
+            if(imagePath is null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                var Filepath = Path.GetFileName(imagePath);
+                
+                return Ok();
+            }
+        }
+    
     }
 }

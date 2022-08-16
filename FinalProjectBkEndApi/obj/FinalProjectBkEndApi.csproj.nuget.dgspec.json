@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "G:\\myChance\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj": {}
+    "G:\\lastVersion\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj": {}
   },
   "projects": {
-    "G:\\myChance\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj": {
+    "G:\\lastVersion\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\myChance\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
+        "projectUniqueName": "G:\\lastVersion\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
         "projectName": "FinalProjectBkEndApi",
-        "projectPath": "G:\\myChance\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
+        "projectPath": "G:\\lastVersion\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
         "packagesPath": "C:\\Users\\Fish\\.nuget\\packages\\",
-        "outputPath": "G:\\myChance\\FinalProjectApi\\FinalProjectBkEndApi\\obj\\",
+        "outputPath": "G:\\lastVersion\\FinalProjectApi\\FinalProjectBkEndApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

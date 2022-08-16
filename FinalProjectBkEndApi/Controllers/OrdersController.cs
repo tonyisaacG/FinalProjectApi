@@ -102,9 +102,18 @@ namespace FinalProjectBkEndApi.Controllers
             if (ModelState.IsValid)
             {
                 var orderbool = _Oservices.PostOrder(orderModel);
-               if(orderbool!=null)
-                    return Ok(orderbool);
-               else
+                if (orderbool != null)
+                {
+                    //if (orderModel.orderType == TypeOrder.Online.ToString())
+                    //{
+                    //    HubController.HubOrder hub = new HubController.HubOrder();
+                    //    var v = hub.SendOrder(orderModel);
+                    //    return Ok(orderbool);
+                    //}
+                    //else
+                        return Ok(orderbool);
+                }
+                else
                     return BadRequest();    
             }
             return BadRequest("data is not valid");

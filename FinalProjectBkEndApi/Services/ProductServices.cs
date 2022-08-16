@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace FinalProjectBkEndApi.Services
 {
-    public class ProductServices : IGenericServices<IParentModel, ProductModel>
+    public class ProductServices : IProducts<ProductModel>
     {
         private readonly RestaurantDbContext _DbContext;
         public ProductServices(RestaurantDbContext DbContext)
@@ -109,5 +109,19 @@ namespace FinalProjectBkEndApi.Services
             catch { return false; }
         }
 
+        public List<ProductModel> GetProductCatId(int productCatId)
+        {
+            try
+            {
+                var products = _DbContext.Products.Include(cat => cat.Categories).Where(ca=>ca.id == productCatId).ToList();
+                List<ProductModel> productModel = new List<ProductModel>();
+                foreach (var product in products)
+                {
+                    productModel.Add(product.ProductsDTOProdcutModel());
+                }
+                return productModel;
+            }
+            catch { return null; }
+        }
     }
 }

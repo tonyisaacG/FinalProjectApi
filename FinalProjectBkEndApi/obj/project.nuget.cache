@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Kf5x+T5KDLrRcNdKxlNAOmna3mSra47ucfldhWTQnoAnGNMAqE9BUq3DrGYkQlnfJ97ZAjfl+vzRu9iHLflHtw==",
+  "dgSpecHash": "yw8v08NgcomK/hGYuKc4KG321Qg6Grqe3A2pZNQtTBf1rniSGwICQxwCG4CuqlQvj5jCsXhXfRGfu/TsirqIGQ==",
   "success": true,
-  "projectFilePath": "G:\\myChance\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
+  "projectFilePath": "G:\\lastVersion\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Fish\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Fish\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.17\\microsoft.aspnetcore.authentication.jwtbearer.5.0.17.nupkg.sha512",
