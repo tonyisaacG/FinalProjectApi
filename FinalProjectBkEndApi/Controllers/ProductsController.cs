@@ -17,13 +17,15 @@ namespace FinalProjectBkEndApi.Controllers
     public class ProductsController : ControllerBase
     {
         public readonly ProductServices _Pservices;
-        private readonly IHostEnvironment _IwebHostEnvironment;
+        private readonly IWebHostEnvironment _IwebHostEnvironment;
+        private readonly IHttpContextAccessor _IHttpContext;
 
 
-        public ProductsController(ProductServices Pservices, IHostEnvironment hostEnvironment)
+        public ProductsController(ProductServices Pservices, IWebHostEnvironment webhostEnvironment, IHttpContextAccessor IHttpContext)
         {
             _Pservices = Pservices;
-            this._IwebHostEnvironment = hostEnvironment;
+            this._IwebHostEnvironment = webhostEnvironment;
+            this._IHttpContext = IHttpContext;
 
         }
         [HttpGet]
@@ -153,20 +155,29 @@ namespace FinalProjectBkEndApi.Controllers
             var files = HttpContext.Request.Form.Files;
             if (files != null && files.Count > 0)
             {
+
+                var path = Path.Combine(_IwebHostEnvironment.ContentRootPath, "Uploads");
+                var newfilename = "";
+                var BaseUrl = _IHttpContext.HttpContext.Request.Scheme + "://" +
+                       _IHttpContext.HttpContext.Request.Host + _IHttpContext.HttpContext.Request.PathBase;
+
                 foreach (var file in files)
                 {
                     FileInfo f1 = new FileInfo(file.FileName);
-                    var newfilename = Guid.NewGuid().ToString() + "_" + f1.Extension;
-                    var path = Path.Combine("", _IwebHostEnvironment.ContentRootPath + "\\Resources\\Products\\" + newfilename);
-                    using (var stream = new FileStream(path, FileMode.Create))
+                    newfilename = Guid.NewGuid().ToString() + "_" + f1.Extension;
+                    string filePath = Path.Combine(path, newfilename);
+                    using (FileStream fs = new FileStream(filePath, FileMode.Create))
                     {
-                        file.CopyTo(stream);
-                    };
-                    product.product_imagePath = path;
+                        file.CopyTo(fs);
+
+                    }
+                    product.product_imagePath = BaseUrl+"/"+ "Uploads" + "/"+newfilename;
                 }
             }
             return product;
         }
+      
+        
         //private string UploadedFile(ProductModel model)
         //{
         //    string uniqueFileName = null;

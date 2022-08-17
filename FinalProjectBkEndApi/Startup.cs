@@ -106,6 +106,7 @@ namespace FinalProjectBkEndApi
             services.AddScoped<ProductServices, ProductServices>();
             services.AddScoped<IGenericServices<IParentModel,UserModel>, UserServices>();
             services.AddScoped<CategoryServices, CategoryServices>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             #endregion
 
             services.Configure<FormOptions>(o =>
@@ -129,11 +130,11 @@ namespace FinalProjectBkEndApi
             }
 
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions
+             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider
-                  (Path.Combine(Directory.GetCurrentDirectory(), "Uploads",
-                  Directory.GetCurrentDirectory(), "Uploads")),
+                 (Path.Combine(Directory.GetCurrentDirectory(), "Uploads",
+                 Directory.GetCurrentDirectory(), "Uploads")),
                 RequestPath = "/Uploads",
 
             });
