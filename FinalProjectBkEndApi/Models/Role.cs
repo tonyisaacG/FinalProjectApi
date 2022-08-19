@@ -7,7 +7,7 @@ namespace FinalProjectBkEndApi.Models
     public enum Permission
     {
         Admin,
-        Casher,
+        Cashier,
         User
     }
     public class Role:IParentModel

@@ -43,6 +43,7 @@ namespace FinalProjectBkEndApi.Services
                     _DbContext.SaveChanges();
                     return oldPurchasesDetails;
                 }
+
             }
             else { return null; }
         }
@@ -94,7 +95,8 @@ namespace FinalProjectBkEndApi.Services
             if (purchasesDeatails != null)
             {
                 purchasesDeatails.quantity = purchasesSalesDetailsModel.quantity;
-                purchasesDeatails.price = purchasesSalesDetailsModel.quantity * item.priceKilo;
+                //purchasesDeatails.price = purchasesSalesDetailsModel.quantity * item.priceKilo;
+                purchasesDeatails.price = purchasesSalesDetailsModel.price;
                 _DbContext.Entry(purchasesDeatails).State = EntityState.Modified;
                 _DbContext.SaveChanges();
                 return true;

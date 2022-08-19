@@ -1,9 +1,12 @@
 ﻿using FinalProjectBkEndApi.DTO;
+using FinalProjectBkEndApi.HubController;
 using FinalProjectBkEndApi.Models;
 using FinalProjectBkEndApi.Repositories;
 using FinalProjectBkEndApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,20 +15,40 @@ namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class OrdersController : ControllerBase
     {
+
         public readonly IOrderServices _Oservices;
-        public OrdersController(IOrderServices Oservices)
+        private readonly IHubContext<HubOrder> _hubContext;
+
+        public OrdersController(IOrderServices Oservices, IHubContext<HubOrder> hubContext)
         {
             _Oservices = Oservices;
+            _hubContext = hubContext;
+
         }
 
 
         [HttpGet("online")]
         public IActionResult GetAllOnline()
         {
+            
             var orderOnlines = _Oservices.GetOnlineInDayOrder();
             if (orderOnlines!= null){
+                return Ok(orderOnlines);
+            }
+            else
+            {
+                return NoContent();
+            }
+        }
+        [HttpGet("GetAllOrderNotOnlineInDay")]
+        public IActionResult GetAllOrderNotOnlineInDay()
+        {
+            var orderOnlines = _Oservices.GetAllOrderNotOnlineInDay();
+            if (orderOnlines != null)
+            {
                 return Ok(orderOnlines);
             }
             else
@@ -106,9 +129,7 @@ namespace FinalProjectBkEndApi.Controllers
                 {
                     //if (orderModel.orderType == TypeOrder.Online.ToString())
                     //{
-                    //    HubController.HubOrder hub = new HubController.HubOrder();
-                    //    var v = hub.SendOrder(orderModel);
-                    //    return Ok(orderbool);
+                    //    _hubContext.Clients.All.SendAsync("ReceiveOrder",orderModel);
                     //}
                     //else
                         return Ok(orderbool);

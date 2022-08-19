@@ -1,6 +1,7 @@
 ﻿using FinalProjectBkEndApi.DTO;
 using FinalProjectBkEndApi.Models;
 using FinalProjectBkEndApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +12,7 @@ namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class CategoriesController : ControllerBase
     {
         public readonly CategoryServices _Cservices;
@@ -21,6 +23,7 @@ namespace FinalProjectBkEndApi.Controllers
             _Cservices = Cservices;
             this._IwebHostEnvironment = hostEnvironment;
         }
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -30,6 +33,7 @@ namespace FinalProjectBkEndApi.Controllers
             return Ok(catlst);
         }
         [HttpGet("{id:int}")]
+        [AllowAnonymous]
         public IActionResult GetOne(int id)
         {
             var item = _Cservices.Get(id);

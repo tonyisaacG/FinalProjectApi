@@ -32,6 +32,23 @@ namespace FinalProjectBkEndApi.Services
                 return null;
         }
 
+        public List<OrderModel> GetAllOrderNotOnlineInDay()
+        {
+            var orders = _DbContext.Orders.Where(o=>o.orderType != TypeOrder.Online.ToString() && o.date == DateTime.Now.Date).ToList();
+            if (orders.Count > 0)
+            {
+                List<OrderModel> orderModels = new List<OrderModel>();
+                foreach (var order in orders)
+                {
+                    orderModels.Add(order.OrderDTOrderModel());
+                }
+                return orderModels;
+            }
+            else
+                return null;
+        }
+
+
         public List<Order> GetByRangeDate(string fromDate, string toDate)
         {
             

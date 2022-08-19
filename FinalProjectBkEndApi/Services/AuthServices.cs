@@ -69,11 +69,10 @@ namespace FinalProjectBkEndApi.Services
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var authClaims = new List<Claim>()
             {
-                
+
                 new Claim("id", userModel.id.ToString()),
                 new Claim("username", userModel.username),
-                new Claim(ClaimTypes.Role, userModel.Role?.permission),
-
+                new Claim("Role", userModel.Role?.permission),
             };
 
 

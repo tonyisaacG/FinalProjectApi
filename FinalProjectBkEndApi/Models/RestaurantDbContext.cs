@@ -19,6 +19,8 @@ namespace FinalProjectBkEndApi.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
 
+        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Order Config
@@ -62,6 +64,14 @@ namespace FinalProjectBkEndApi.Models
             #region items config
             modelBuilder.Entity<Items>().Property(i => i.totalQuantity).HasDefaultValue(0);
             #endregion
+
+            #region add role in table role 
+            modelBuilder.Entity<Role>().HasData(
+                new Role() { id=1, permission = Permission.Admin.ToString() },
+                new Role() { id=2,permission = Permission.User.ToString() },
+                new Role() { id=3,permission = Permission.Cashier.ToString() });
+            #endregion
+
         }
 
     }

@@ -3,6 +3,7 @@ using FinalProjectBkEndApi.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FinalProjectBkEndApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProjectBkEndApi.Controllers
 {
