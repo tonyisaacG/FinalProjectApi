@@ -15,7 +15,11 @@ namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+<<<<<<< HEAD
     
+=======
+    [Authorize]
+>>>>>>> 37d10e92d5685b8791d0eea33b0e749c6344fcff
     public class OrdersController : ControllerBase
     {
 
