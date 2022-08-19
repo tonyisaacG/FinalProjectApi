@@ -1,9 +1,11 @@
 ﻿using FinalProjectBkEndApi.DTO;
+using FinalProjectBkEndApi.HubController;
 using FinalProjectBkEndApi.Models;
 using FinalProjectBkEndApi.Repositories;
 using FinalProjectBkEndApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,9 +17,13 @@ namespace FinalProjectBkEndApi.Controllers
     public class OrdersController : ControllerBase
     {
         public readonly IOrderServices _Oservices;
-        public OrdersController(IOrderServices Oservices)
+        private readonly IHubContext<HubOrder> _hubContext;
+
+        public OrdersController(IOrderServices Oservices, IHubContext<HubOrder> hubContext)
         {
             _Oservices = Oservices;
+            _hubContext = hubContext;
+
         }
 
 
@@ -106,9 +112,7 @@ namespace FinalProjectBkEndApi.Controllers
                 {
                     //if (orderModel.orderType == TypeOrder.Online.ToString())
                     //{
-                    //    HubController.HubOrder hub = new HubController.HubOrder();
-                    //    var v = hub.SendOrder(orderModel);
-                    //    return Ok(orderbool);
+                    //    _hubContext.Clients.All.SendAsync("ReceiveOrder",orderModel);
                     //}
                     //else
                         return Ok(orderbool);
