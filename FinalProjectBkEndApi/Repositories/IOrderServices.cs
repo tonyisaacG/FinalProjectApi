@@ -7,6 +7,7 @@ namespace FinalProjectBkEndApi.Repositories
     public interface IOrderServices
     {
         List<OrderModel> GetAll();
+        List<OrderModel> GetAllOrderNotOnlineInDay();
         OrderModel GetOrderDetails(int id);
         OrderModel PutOrder(int id,OrderModel order);
         OrderModel PostOrder(OrderModel order);

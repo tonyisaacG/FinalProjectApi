@@ -14,6 +14,8 @@ namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class ProductsController : ControllerBase
     {
         public readonly ProductServices _Pservices;
@@ -28,6 +30,7 @@ namespace FinalProjectBkEndApi.Controllers
             this._IHttpContext = IHttpContext;
 
         }
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -36,6 +39,7 @@ namespace FinalProjectBkEndApi.Controllers
                 return NotFound("not exist any item");
             return Ok(pro);
         }
+        [AllowAnonymous]
         [HttpGet("productCatId/{id:int}")]
         public IActionResult GetProductCatId(int id)
         {
@@ -45,6 +49,7 @@ namespace FinalProjectBkEndApi.Controllers
             return Ok(pro);
         }
         [HttpGet("{id:int}")]
+        [AllowAnonymous]
         public IActionResult GetOne(int id)
         {
             var product = _Pservices.Get(id);

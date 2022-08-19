@@ -3,11 +3,13 @@ using FinalProjectBkEndApi.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FinalProjectBkEndApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PurchasesSalesController : ControllerBase
     {
         public readonly IBill<PurchasesSalesModel> _PSservices;

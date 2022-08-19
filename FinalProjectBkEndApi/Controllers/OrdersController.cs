@@ -3,6 +3,7 @@ using FinalProjectBkEndApi.HubController;
 using FinalProjectBkEndApi.Models;
 using FinalProjectBkEndApi.Repositories;
 using FinalProjectBkEndApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -14,8 +15,10 @@ namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
+
         public readonly IOrderServices _Oservices;
         private readonly IHubContext<HubOrder> _hubContext;
 
@@ -30,8 +33,22 @@ namespace FinalProjectBkEndApi.Controllers
         [HttpGet("online")]
         public IActionResult GetAllOnline()
         {
+            
             var orderOnlines = _Oservices.GetOnlineInDayOrder();
             if (orderOnlines!= null){
+                return Ok(orderOnlines);
+            }
+            else
+            {
+                return NoContent();
+            }
+        }
+        [HttpGet("GetAllOrderNotOnlineInDay")]
+        public IActionResult GetAllOrderNotOnlineInDay()
+        {
+            var orderOnlines = _Oservices.GetAllOrderNotOnlineInDay();
+            if (orderOnlines != null)
+            {
                 return Ok(orderOnlines);
             }
             else

@@ -1,6 +1,7 @@
 ﻿using FinalProjectBkEndApi.DTO;
 using FinalProjectBkEndApi.Repositories;
 using FinalProjectBkEndApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         public readonly IGenericServices<IParentModel,UserModel> _Uservices;

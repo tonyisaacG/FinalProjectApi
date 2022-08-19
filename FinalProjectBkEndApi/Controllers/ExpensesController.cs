@@ -1,6 +1,7 @@
 ﻿using FinalProjectBkEndApi.DTO;
 using FinalProjectBkEndApi.Models;
 using FinalProjectBkEndApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ExpensesController : ControllerBase
     {
         public readonly IExpenses<ExpensesModel> _Eservices;
