@@ -6,12 +6,7 @@ namespace FinalProjectBkEndApi.DTO
     {
         public int id { get; set; }
         public string name { get; set; }
-<<<<<<< HEAD
         public int priceKilo { get; set; } = 1;
-=======
-        [Required]
-        public int priceKilo { get; set; }
->>>>>>> 37d10e92d5685b8791d0eea33b0e749c6344fcff
         [Range(minimum: 0, maximum: int.MaxValue)]
         public int? totalQuantity { get; set; } = 0;
         [Range(minimum: 1, maximum: int.MaxValue)]

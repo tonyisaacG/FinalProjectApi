@@ -14,14 +14,8 @@ namespace FinalProjectBkEndApi.Models
         public string name { get; set; }
         [Range(minimum: 0, maximum: int.MaxValue)]
         public int? totalQuantity { get; set; } = 0;
-<<<<<<< HEAD
         [Column(TypeName = "money")]
         public int priceKilo { get; set; } = 1;
-=======
-        [Column(TypeName ="money")]
-        [Required]
-        public int priceKilo { get; set; }
->>>>>>> 37d10e92d5685b8791d0eea33b0e749c6344fcff
         [Range(minimum: 1, maximum: int.MaxValue)]
         public int? expectedQuantityInDay { get; set; } = 1;     //Amount expected to be used during the day    
         [StringLength(150), MaxLength(150)]

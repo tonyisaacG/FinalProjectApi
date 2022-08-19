@@ -9,7 +9,6 @@ namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class PurchasesSalesController : ControllerBase
     {
         public readonly IBill<PurchasesSalesModel> _PSservices;
