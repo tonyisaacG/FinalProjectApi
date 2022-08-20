@@ -72,6 +72,9 @@ namespace FinalProjectBkEndApi.Models
                 new Role() { id=3,permission = Permission.Cashier.ToString() });
             #endregion
 
+            #region add admin for database
+            modelBuilder.Entity<User>().HasData(new User() { id = 1, name = "seafood", username = "seafood", password = Helper.HelperFunc.EncodePasswordToBase64("seafood"), Role_id = 1 });
+            #endregion
         }
 
     }

@@ -5744,11 +5744,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\ITIFinalProject\\FinalProjectApi3\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
+      "projectUniqueName": "E:\\khara\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
       "projectName": "FinalProjectBkEndApi",
-      "projectPath": "E:\\ITIFinalProject\\FinalProjectApi3\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
+      "projectPath": "E:\\khara\\FinalProjectApi\\FinalProjectBkEndApi\\FinalProjectBkEndApi.csproj",
       "packagesPath": "C:\\Users\\Fish\\.nuget\\packages\\",
-      "outputPath": "E:\\ITIFinalProject\\FinalProjectApi3\\FinalProjectBkEndApi\\obj\\",
+      "outputPath": "E:\\khara\\FinalProjectApi\\FinalProjectBkEndApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

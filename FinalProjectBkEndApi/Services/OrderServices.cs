@@ -132,6 +132,7 @@ namespace FinalProjectBkEndApi.Services
             {
                 if (order != null)
                 {
+                    order.order_date = DateTime.Now;
                     var newOrder = order.OrderModelDTOrder();
                     newOrder.User = _DbContext.Users.FirstOrDefault(user => user.username == order.username);
                     _DbContext.Orders.Add(newOrder);
