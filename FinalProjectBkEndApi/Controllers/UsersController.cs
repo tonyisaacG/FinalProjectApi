@@ -9,6 +9,8 @@ namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class UsersController : ControllerBase
     {
         public readonly IGenericServices<IParentModel,UserModel> _Uservices;

@@ -12,7 +12,7 @@ namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+    [Authorize]
     public class CategoriesController : ControllerBase
     {
         public readonly CategoryServices _Cservices;

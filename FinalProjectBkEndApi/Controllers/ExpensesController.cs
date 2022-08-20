@@ -9,7 +9,8 @@ namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+    [Authorize]
+
     public class ExpensesController : ControllerBase
     {
         public readonly IExpenses<ExpensesModel> _Eservices;

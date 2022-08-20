@@ -10,7 +10,8 @@ namespace FinalProjectBkEndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+    [Authorize]
+
     public class ItemsController : ControllerBase
     {
         public readonly ItemsServices _Iservices;
