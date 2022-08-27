@@ -18,34 +18,62 @@ namespace FinalProjectBkEndApi.Services
 
         public IParentModel AddBillDetails(int idBill, PurchasesSalesDetailsModel purchasesSalesDetailsModel)
         {
-            var purchases = _DbContext.PurchasesConsumptions.Where(od => od.id == idBill).FirstOrDefault();
-            var item = _DbContext.Items.Where(i => i.id == purchasesSalesDetailsModel.item_id).FirstOrDefault();
-            if (purchases != null && item != null)
-            {
-                var oldPurchasesDetails = _DbContext.PurchasesDetails.Where(op => op.item_id == purchasesSalesDetailsModel.item_id &&
-                op.purchases_id == idBill).FirstOrDefault();
-                if (oldPurchasesDetails == null)
-                {
-                    var newobject = new PurchasesConsumptionDetails();
-                    newobject.quantity = purchasesSalesDetailsModel.quantity;
-                    newobject.price = purchasesSalesDetailsModel.price;
-                    newobject.PurchasesConsumption = purchases;
-                    newobject.Items = item;
-                    _DbContext.Entry(newobject).State = EntityState.Added;
-                    _DbContext.SaveChanges();
-                    return newobject;
-                }
-                else
-                {
-                    oldPurchasesDetails.quantity += purchasesSalesDetailsModel.quantity;
-                    oldPurchasesDetails.price += purchasesSalesDetailsModel.price;
-                    _DbContext.Entry(oldPurchasesDetails).State = EntityState.Modified;
-                    _DbContext.SaveChanges();
-                    return oldPurchasesDetails;
-                }
+            var transition = _DbContext.Database.BeginTransaction();
 
+            try
+            {
+                var purchases = _DbContext.PurchasesConsumptions.Where(od => od.id == idBill).FirstOrDefault();
+                var item = _DbContext.Items.Where(i => i.id == purchasesSalesDetailsModel.item_id).FirstOrDefault();
+                if (purchases != null && item != null)
+                {
+                    var oldPurchasesDetails = _DbContext.PurchasesDetails.Where(op => op.item_id == purchasesSalesDetailsModel.item_id &&
+                    op.purchases_id == idBill).FirstOrDefault();
+                    if (oldPurchasesDetails == null)
+                    {
+                        var newobject = new PurchasesConsumptionDetails();
+                        newobject.quantity = purchasesSalesDetailsModel.quantity;
+                        newobject.price = purchasesSalesDetailsModel.price;
+                        newobject.PurchasesConsumption = purchases;
+                        newobject.Items = item;
+
+
+                        _DbContext.Entry(newobject).State = EntityState.Added;
+                        _DbContext.SaveChanges();
+                        item.totalQuantity += purchasesSalesDetailsModel.quantity;
+                        if (item.totalQuantity < 0)
+                        {
+                            throw new System.Exception();
+                        }
+                        _DbContext.Entry(item).State = EntityState.Modified;
+                        _DbContext.SaveChanges();
+                        transition.Commit();
+
+                        return newobject;
+                    }
+                    else
+                    {
+                        oldPurchasesDetails.quantity += purchasesSalesDetailsModel.quantity;
+                        oldPurchasesDetails.price += purchasesSalesDetailsModel.price;
+
+                        _DbContext.Entry(oldPurchasesDetails).State = EntityState.Modified;
+                        _DbContext.SaveChanges();
+                        item.totalQuantity += purchasesSalesDetailsModel.quantity;
+                        if (item.totalQuantity < 0)
+                        {
+                            throw new System.Exception();
+                        }
+                        _DbContext.Entry(item).State = EntityState.Modified;
+                        _DbContext.SaveChanges();
+                        transition.Commit();
+
+                        return oldPurchasesDetails;
+                    }
+
+
+                }
+                else { return null; }
             }
-            else { return null; }
+            catch { transition.Rollback(); return null; }
         }
 
         public bool ChangeTypeBill(int idBill, BillType billType)
@@ -78,14 +106,28 @@ namespace FinalProjectBkEndApi.Services
 
         public bool DeleteBillDetails(int idBill, int idItem)
         {
-            var purchasesDetails = _DbContext.PurchasesDetails.Where(p => p.purchases_id == idBill && p.item_id == idItem).FirstOrDefault();
-            if (purchasesDetails != null)
+            var transition = _DbContext.Database.BeginTransaction();
+            try
             {
-                _DbContext.Entry(purchasesDetails).State = EntityState.Deleted;
-                _DbContext.SaveChanges();
-                return true;
+                var purchasesDetails = _DbContext.PurchasesDetails.Where(p => p.purchases_id == idBill && p.item_id == idItem).FirstOrDefault();
+                if (purchasesDetails != null)
+                {
+                    var item = _DbContext.Items.FirstOrDefault(i => i.id == idItem);
+                    item.totalQuantity -= purchasesDetails.quantity;
+                    if (item.totalQuantity < 0)
+                    {
+                        throw new System.Exception();
+                    }
+                    _DbContext.Entry(item).State = EntityState.Modified;
+                    _DbContext.SaveChanges();
+                    _DbContext.Entry(purchasesDetails).State = EntityState.Deleted;
+                    _DbContext.SaveChanges();
+                    transition.Commit();
+                    return true;
+                }
+                else { return false; }
             }
-            else { return false; }
+            catch { transition.Rollback();return false; }
         }
 
         public bool EditBillDetails(int idBill, int idItem, PurchasesSalesDetailsModel purchasesSalesDetailsModel)
@@ -153,33 +195,53 @@ namespace FinalProjectBkEndApi.Services
         {
             if (entity != null)
             {
-                var newBill = entity.PurchasesModelDTPurchases();
-                _DbContext.PurchasesConsumptions.Add(newBill);
-                _DbContext.SaveChanges();
-                // save deatils for order or exists
-                if (entity.PurchasesSalesDetailsModels.Count > 0)
+                var trasnsition = _DbContext.Database.BeginTransaction();
+                try
                 {
-                    List<PurchasesConsumptionDetails> consumptionDetails = new List<PurchasesConsumptionDetails>();
-                    foreach (var details in entity.PurchasesSalesDetailsModels)
+
+
+                    var newBill = entity.PurchasesModelDTPurchases();
+                    _DbContext.PurchasesConsumptions.Add(newBill);
+                    _DbContext.SaveChanges();
+                    // save deatils for order or exists
+                    if (entity.PurchasesSalesDetailsModels.Count > 0)
                     {
-                        consumptionDetails.Add(new PurchasesConsumptionDetails()
+                        List<Items> itms = new List<Items>();
+                        List<PurchasesConsumptionDetails> consumptionDetails = new List<PurchasesConsumptionDetails>();
+                        foreach (var details in entity.PurchasesSalesDetailsModels)
                         {
-                            purchases_id = newBill.id,
-                            item_id = details.item_id,
-                            quantity = details.quantity,
-                            price = details.price
-                        });
+                            consumptionDetails.Add(new PurchasesConsumptionDetails()
+                            {
+                                purchases_id = newBill.id,
+                                item_id = details.item_id,
+                                quantity = details.quantity,
+                                price = details.price
+                            });
+                            var item = _DbContext.Items.FirstOrDefault(i => i.id == details.item_id);
+                            item.totalQuantity += details.quantity;
+                            if (item.totalQuantity < 0)
+                            {
+                                throw new System.Exception();
+                            }
+                            itms.Add(item);
+                        }
+                        _DbContext.PurchasesDetails.AddRange(consumptionDetails);
+                        _DbContext.SaveChanges();
+                        // add quantity for items
+                        _DbContext.Items.UpdateRange(itms);
+                        _DbContext.SaveChanges();
 
                     }
-                    _DbContext.PurchasesDetails.AddRange(consumptionDetails);
-                    _DbContext.SaveChanges();
-                    // add quantity for items
-
-
+                    var bill = _DbContext.PurchasesConsumptions.Include(p => p.PurchasesDetails).ThenInclude(t => t.Items).FirstOrDefault(pu => pu.id == newBill.id);
+                    trasnsition.Commit();
+                    return bill.PurchasesDTOpurchasesModel();
+                   
                 }
-                var bill = _DbContext.PurchasesConsumptions.Include(p=>p.PurchasesDetails).ThenInclude(t => t.Items).FirstOrDefault(pu => pu.id == newBill.id);
-
-                return bill.PurchasesDTOpurchasesModel();
+                catch
+                {
+                    trasnsition.Rollback();
+                    return null;
+                }
             }
             return null;
         }

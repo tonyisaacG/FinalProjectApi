@@ -13,7 +13,7 @@ namespace FinalProjectBkEndApi.Models
         [Required]
         public string name { get; set; }
         [Range(minimum: 0, maximum: int.MaxValue)]
-        public int? totalQuantity { get; set; } = 0;
+        public int totalQuantity { get; set; } = 0;
         [Column(TypeName = "money")]
         public int priceKilo { get; set; } = 1;
         [Range(minimum: 1, maximum: int.MaxValue)]

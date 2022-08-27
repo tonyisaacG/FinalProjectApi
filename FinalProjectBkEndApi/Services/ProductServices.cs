@@ -76,7 +76,7 @@ namespace FinalProjectBkEndApi.Services
             {
                 product.name = entity.product_name;
                 product.description = entity.product_description;
-              //  product.imagePath = entity.product_imagePath;
+                product.imagePath = entity.product_imagePath;
                 product.price = entity.product_price;
                 product.Categories = _DbContext.Categories.FirstOrDefault(cat => cat.id == entity.cat_id);
                 if (product.Categories != null)

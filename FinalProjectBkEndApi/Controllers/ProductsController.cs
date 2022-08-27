@@ -39,7 +39,7 @@ namespace FinalProjectBkEndApi.Controllers
                 return NotFound("not exist any item");
             return Ok(pro);
         }
-        [AllowAnonymous]
+        
         [HttpGet("productCatId/{id:int}")]
         public IActionResult GetProductCatId(int id)
         {
@@ -59,7 +59,6 @@ namespace FinalProjectBkEndApi.Controllers
             }
             return Ok(product);
         }
-        //[HttpPost("postImage")]
         #region
         //public IActionResult post( ProductModel product)
         //{
@@ -121,10 +120,17 @@ namespace FinalProjectBkEndApi.Controllers
             }
         }
         [HttpPut("{id:int}")]
-        public IActionResult Put([FromRoute] int id, [FromBody] ProductModel product)
+        public IActionResult Put([FromRoute]int id,[FromForm] ProductModel product)
         {
             if (ModelState.IsValid)
             {
+                var oldImagePathProduct = _Pservices.Get(id);
+                if(product.product_imagePathSrc !=null)
+                {
+                    RemoveImage(((ProductModel)oldImagePathProduct).product_imagePath);
+                    var newPath = UploadImage(product);
+                    product.product_imagePath = newPath.product_imagePath;
+                }
                 var productBool = _Pservices.Put(id, product);
                 if (productBool!=null)
                 {
@@ -140,6 +146,7 @@ namespace FinalProjectBkEndApi.Controllers
                 return BadRequest("data is not valid");
             }
         }
+      
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
@@ -181,8 +188,18 @@ namespace FinalProjectBkEndApi.Controllers
             }
             return product;
         }
-      
-        
+      private  void RemoveImage(string imagePath)
+        {
+            try { 
+            FileInfo f1 = new FileInfo(imagePath);
+            if (f1.Exists)
+            {
+                f1.Delete();
+            }
+            }
+            catch { }
+        }
+
         //private string UploadedFile(ProductModel model)
         //{
         //    string uniqueFileName = null;

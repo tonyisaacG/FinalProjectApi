@@ -223,9 +223,15 @@ namespace FinalProjectBkEndApi.Services
         public bool DeleteOrderDetails(int idOrder,int idProduct)
         {
             var orderDeatails = _DbContext.OrderDetails.Where(od => od.order_id == idOrder&&od.product_id == idProduct).FirstOrDefault();
+            var orders = _DbContext.Orders.FirstOrDefault(o => o.id == idOrder);
             if (orderDeatails != null) {
+
                 _DbContext.Entry(orderDeatails).State = EntityState.Deleted;
                 _DbContext.SaveChanges();
+                orders.totalPrice -= orderDeatails.priceMeal;
+                _DbContext.Entry(orders).State = EntityState.Modified;
+                _DbContext.SaveChanges();
+
                 return true;
             }
             else { return false; }
@@ -243,7 +249,7 @@ namespace FinalProjectBkEndApi.Services
                 {
                     var newobject = new OrderDetails();
                     newobject.quantityMeal = orderDetails.quantityMeal;
-                    newobject.priceMeal = orderDetails.quantityMeal * product.price;
+                    newobject.priceMeal = orderDetails.priceMeal;
                     newobject.desription = orderDetails.desription;
                     newobject.Order = order;
                     newobject.Products = product;
@@ -254,7 +260,7 @@ namespace FinalProjectBkEndApi.Services
                 else
                 {
                     oldOrderDetails.quantityMeal += orderDetails.quantityMeal;
-                    oldOrderDetails.priceMeal = orderDetails.quantityMeal * product.price;
+                    oldOrderDetails.priceMeal = orderDetails.priceMeal;
                     oldOrderDetails.desription = orderDetails.desription;
                     _DbContext.Entry(oldOrderDetails).State = EntityState.Modified;
                     _DbContext.SaveChanges();

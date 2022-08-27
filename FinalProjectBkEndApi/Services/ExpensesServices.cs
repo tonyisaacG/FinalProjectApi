@@ -18,6 +18,7 @@ namespace FinalProjectBkEndApi.Services
 
         public IParentModel AddBillDetails(int idBill, ExpensesDetailsModel ExpensesDetailsModel)
         {
+            var transition = _DbContext.Database.BeginTransaction();
             try
             {
                 var expenses = _DbContext.Expenses.Where(e => e.id == idBill).FirstOrDefault();
@@ -34,6 +35,14 @@ namespace FinalProjectBkEndApi.Services
                         newobject.Items = item;
                         _DbContext.Entry(newobject).State = EntityState.Added;
                         _DbContext.SaveChanges();
+                        item.totalQuantity -= ExpensesDetailsModel.quantity;
+                        if (item.totalQuantity < 0)
+                        {
+                            throw new System.Exception();
+                        }
+                        _DbContext.Entry(item).State = EntityState.Modified;
+                        _DbContext.SaveChanges();
+                        transition.Commit();
                         return newobject;
                     }
                     else
@@ -41,13 +50,23 @@ namespace FinalProjectBkEndApi.Services
                         oldDetails.quantity += ExpensesDetailsModel.quantity;
                         _DbContext.Entry(oldDetails).State = EntityState.Modified;
                         _DbContext.SaveChanges();
+                        item.totalQuantity -= ExpensesDetailsModel.quantity;
+                        if (item.totalQuantity < 0)
+                        {
+                            throw new System.Exception();
+                        }
+                        _DbContext.Entry(item).State = EntityState.Modified;
+                        _DbContext.SaveChanges();
+                        transition.Commit();
                         return oldDetails;
                     }
+                   
                 }
                 else { return null; }
             }
             catch
             {
+                transition.Rollback();
                 return null;
             }
         }
@@ -85,14 +104,28 @@ namespace FinalProjectBkEndApi.Services
 
         public bool DeleteBillDetails(int idBill, int idItem)
         {
-            var expensesD = _DbContext.ExpensesDetails.Where(e => e.expenses_id == idBill && e.item_id == idItem).FirstOrDefault();
-            if (expensesD != null)
+            var transition = _DbContext.Database.BeginTransaction();
+            try
             {
-                _DbContext.Entry(expensesD).State = EntityState.Deleted;
-                _DbContext.SaveChanges();
-                return true;
+                var expensesD = _DbContext.ExpensesDetails.Where(e => e.expenses_id == idBill && e.item_id == idItem).FirstOrDefault();
+                if (expensesD != null)
+                {
+                    var item = _DbContext.Items.FirstOrDefault(i => i.id == idItem);
+                    item.totalQuantity += expensesD.quantity;
+                    if(item.totalQuantity < 0)
+                    {
+                        throw new System.Exception();
+                    }
+                    _DbContext.Entry(item).State = EntityState.Modified;
+                    _DbContext.SaveChanges();
+                    _DbContext.Entry(expensesD).State = EntityState.Deleted;
+                    _DbContext.SaveChanges();
+                    transition.Commit();
+                    return true;
+                }
+                else { return false; }
             }
-            else { return false; }
+            catch { transition.Rollback(); return false; }
         }
 
         public bool EditBillDetails(int idBill, int idItem, ExpensesDetailsModel ExpensesDetailsModel)
@@ -172,6 +205,7 @@ namespace FinalProjectBkEndApi.Services
                     // save deatils for order or exists
                     if (entity.ExpensesDetailsModels.Count > 0)
                     {
+                        List<Items> itms = new List<Items>();
                         List<ExpensesDetails> expensesDetails = new List<ExpensesDetails>();
                         foreach (var details in entity.ExpensesDetailsModels)
                         {
@@ -181,6 +215,14 @@ namespace FinalProjectBkEndApi.Services
                                 item_id = details.item_id,
                                 quantity = details.quantity,
                             });
+
+                            var item = _DbContext.Items.FirstOrDefault(i => i.id == details.item_id);
+                            item.totalQuantity -= details.quantity;
+                            if (item.totalQuantity < 0)
+                            {
+                                throw new System.Exception();
+                            }
+                            itms.Add(item);
 
                         }
 
